@@ -1,8 +1,19 @@
-# React + Vite
+# CrocoSheets front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ce dépôt contient tout le code front-end du projet de Design Pattern nommé **CrocoSheets**.
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Clonez le projet dans un terminal  
+   ```git clone git@github.com:yoan-ngr/crocosheets-front-end.git```
+2. Déplacez-vous dans le dossier du projet  
+   ```cd crocosheets-front-end```
+3. Installez les packages du projet  
+   ```npm install```
+
+## Lancement
+
+Pour lancer le projet, tapez la commande suivante, ou configurez votre IDE pour lancer cette commande  
+```npm run dev```
+
+Puis rendez-vous sur l'url http://localhost:5173 pour utiliser le front-end.
