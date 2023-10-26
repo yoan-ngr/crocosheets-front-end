@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import Input from "../components/Input.jsx";
 
 function Register () {
 
@@ -33,6 +34,15 @@ function Register () {
                 <span className="form-label-alt">Please enter a valid email.</span>
             </label>
             </div>
+
+            <Input
+                label="Adresse email"
+                type="email"
+                placeholder="mail@exemple.fr"
+                error=""
+                value={email}
+                onChange={handleMailType}
+            />
 
             <div className="form-field">
                 <label className="form-label">Prénom</label>
