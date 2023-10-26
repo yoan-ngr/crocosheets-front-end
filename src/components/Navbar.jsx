@@ -7,7 +7,7 @@ function Navbar () {
 
     return <div className="navbar rounded-lg">
         <div className="navbar-start">
-            <Link className="navbar-item" to='/' >CrocoSheets</Link>
+            <Link className="navbar-item text-lg font-semibold" to='/' >CrocoSheets</Link>
         </div>
         <div className="navbar-end">
             {

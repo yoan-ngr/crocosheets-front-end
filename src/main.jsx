@@ -10,6 +10,7 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Sheet from "./pages/Sheet";
+import Home from "./pages/Home.jsx";
 
 const router = createBrowserRouter([
     {
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
         children : [
             {
                 path: "/",
-                element: <div>Accueil</div>,
+                element: <div><Home /></div>,
             },
             {
                 path: "/login",
