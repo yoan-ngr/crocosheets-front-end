@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 function Sheet() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const [selectedCell, setSelectedCell] = useState(null);
-    let cell_focus;
+    let cell_focus = null; // cellules dans sur la quel est le focus
+
     const handleCellClick = (rowIndex, colIndex) => {
         setSelectedCell({ row: rowIndex, col: colIndex });
     };
@@ -23,33 +24,35 @@ function Sheet() {
         }
     };
 
-    // Gestion de l'événement global pour l'appui sur "Entrée"
-
     const handleGlobalKeyDown = (e) => {
-        if (e.key === 'Enter' && selectedCell ) {
-            const selectedCellElement = document.querySelector(`#cell-${selectedCell.row}-${selectedCell.col}`);
-            console.log("111111111111111111111111")
-            console.log("cell_focus : " + cell_focus)
-            console.log("select : " + selectedCellElement.id)
+        const selectedCellElement = document.querySelector(`#cell-${selectedCell.row}-${selectedCell.col}`);
 
-            if (selectedCellElement && (cell_focus !== selectedCellElement)) {
+        if (e.key === 'Enter' && selectedCell) {
+            if (selectedCellElement && cell_focus !== selectedCellElement) {
                 e.preventDefault(); // Empêche l'ajout de la nouvelle ligne
                 selectedCellElement.contentEditable = true;
                 selectedCellElement.focus();
                 cell_focus = selectedCellElement;
             } else if (selectedCellElement && cell_focus === selectedCellElement) {
                 selectedCellElement.blur(); // Supprime le focus de la cellule en cours d'édition
-                console.log("222222222222222222222")
+                cell_focus = null;
+            }
+        } else if (!cell_focus) {
+            if (e.key === 'ArrowUp' && selectedCell.row > 0) {
+                setSelectedCell({ row: selectedCell.row - 1, col: selectedCell.col });
+            } else if (e.key === 'ArrowDown' && selectedCell.row < 25) {
+                setSelectedCell({ row: selectedCell.row + 1, col: selectedCell.col });
+            } else if (e.key === 'ArrowLeft' && selectedCell.col > 0) {
+                setSelectedCell({ row: selectedCell.row, col: selectedCell.col - 1 });
+            } else if (e.key === 'ArrowRight' && selectedCell.col < 25) {
+                setSelectedCell({ row: selectedCell.row, col: selectedCell.col + 1 });
             }
         }
     };
 
-
     useEffect(() => {
-        // Écoute des touches enfoncées au niveau de la page entière
         window.addEventListener('keydown', handleGlobalKeyDown);
         return () => {
-            // Nettoyage de l'écouteur d'événement lors du démontage du composant
             window.removeEventListener('keydown', handleGlobalKeyDown);
         };
     }, [selectedCell]);
@@ -72,17 +75,17 @@ function Sheet() {
                     <tr key={rowIndex}>
                         <td className="w-12">{alphabet.charAt(rowIndex)}</td>
                         {Array.from({ length: 26 }, (_, colIndex) => (
-                            <td id = {rowIndex+"-"+colIndex }
-                                key={colIndex}
-                                id={`cell-${rowIndex}-${colIndex}`}
-                                contentEditable={selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex}
-                                className={`w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black p-2 ${
-                                    selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex ? 'bg-green-200' : ''
-                                }`}
-                                onClick={() => handleCellClick(rowIndex, colIndex)}
-                                onDoubleClick={handleCellDoubleClick}
-                                onKeyDown={handleCellKeyDown}
-                            ></td>
+                            <td
+                            key={colIndex}
+                            id={`cell-${rowIndex}-${colIndex}`}
+                            contentEditable={selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex}
+                            className={`w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black p-2 ${
+                                selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex ? 'bg-green-200' : ''
+                            }`}
+                            onClick={() => handleCellClick(rowIndex, colIndex)}
+                            onDoubleClick={handleCellDoubleClick}
+                            onKeyDown={handleCellKeyDown}
+                            />
                         ))}
                     </tr>
                 ))}
