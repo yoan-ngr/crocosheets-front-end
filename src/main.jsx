@@ -8,6 +8,7 @@ import {
 import Navbar from "./components/Navbar.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 const router = createBrowserRouter([
     {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: "/register",
                 element: <Register />,
+            },
+            {
+                path: "/dashboard",
+                element: <Dashboard />,
             }
         ]
     },
