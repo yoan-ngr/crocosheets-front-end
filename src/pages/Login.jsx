@@ -5,10 +5,14 @@ function Login () {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSignIn = () => {
         console.log('Email:', email);
         console.log('Password:', password);
+    };
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     };
 
     return <div className="mx-auto flex w-full max-w-sm flex-col gap-6">
@@ -35,11 +39,15 @@ function Login () {
                 <div className="form-control">
                     <input
                         placeholder="Type here"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
                         className="input max-w-full"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                    />                </div>
+                    />
+                    <button type="button" onClick={togglePasswordVisibility}>
+                        {showPassword ? 'Hide' : 'Show'}
+                    </button>
+                </div>
             </div>
             <div className="form-field">
                 <div className="form-control justify-between">
