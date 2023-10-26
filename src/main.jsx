@@ -14,7 +14,7 @@ import Sheet from "./pages/Sheet";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <div><Navbar />Hello world!<Outlet/></div>,
+        element: <div><Navbar /><Outlet/></div>,
         children : [
             {
                 path: "/",
