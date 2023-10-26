@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {Link} from "react-router-dom";
+import EyeSlashIcon from "../components/icons/EyeSlashIcon.jsx";
+import EyeIcon from "../components/icons/EyeIcon.jsx";
 
 
 function Login () {
@@ -45,8 +47,8 @@ function Login () {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button type="button" onClick={togglePasswordVisibility}>
-                        {showPassword ? 'Hide' : 'Show'}
+                    <button type="button" className="btn btn-ghost px-1.5" onClick={togglePasswordVisibility}>
+                        {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
                     </button>
                 </div>
             </div>

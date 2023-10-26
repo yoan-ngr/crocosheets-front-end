@@ -1,8 +1,9 @@
+import PageTitle from "../components/PageTitle.jsx";
+
 function Dashboard () {
     return <div className="w-3/4 mx-auto">
-        dashboard
-        <br />
-        <br />
+
+        <PageTitle text="Dashboard" />
         <button className="btn btn-outline-primary mb-6">Nouveau document</button>
         <div className="flex overflow-x-auto">
             <table className="table-hover table-zebra table">
