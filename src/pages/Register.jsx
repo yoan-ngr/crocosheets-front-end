@@ -4,7 +4,15 @@ import Input from "../components/Input.jsx";
 function Register () {
 
     const [email, setEmail] = useState('');
+    const [prenom, setPrenom] = useState('');
+    const [nom, setNom] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setconfirmPassword] = useState('');
+
+    const [emailError, setEmailError] = useState('');
+    const [prenomError, setprenomError] = useState('');
+    const [nomError, setnomError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
 
     const handleSignUp = () => {
         console.log('Email:', email);
@@ -12,8 +20,50 @@ function Register () {
     };
 
     const handleMailType = (e) => {
+
+        const re = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+        if (re.test(e.target.value)){
+            setEmailError("")
+        }else {
+            setEmailError("veuillez entrer une email valide")
+        }
+        console.log(emailError)
         setEmail(e.target.value)
     };
+
+    const handlePrenom = (e) => {
+
+        if (e.target.value.length >= 2){
+            setprenomError("")
+
+        }else {
+            setprenomError("veuillez entrer un prenom valide")
+        }
+        setPrenom(e.target.value)
+    };
+
+    const handleNom = (e) => {
+
+        if (e.target.value.length >= 2){
+            setnomError("")
+
+        }else {
+            setnomError("veuillez entrer un nom valide")
+        }
+        setNom(e.target.value)
+    };
+
+    const handleMotDePasse = (e) => {
+
+        const re = new RegExp("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}:;<>,.?~\\[\\]\\-\\\\\\/])[\\w!@#$%^&*()_+{}:;<>,.?~\\[\\]\\-\\\\\\/]{8,}$")
+        if (re.test(e.target.value)){
+            setPasswordError("")
+        }else {
+            setPasswordError("veuillez entrer un mot de passe d'au moins 8 caractères, une majuscule, une minuscule et un caractère spécial")
+        }
+        setPassword(e.target.value)
+    };
+
 
     return <div className="mx-auto flex w-full max-w-sm flex-col gap-6">
         <div className="flex flex-col items-center">
@@ -21,66 +71,43 @@ function Register () {
             <p className="text-sm">Creez un compte pour accéder à CrocoSHEET</p>
         </div>
         <div className="form-group">
-            <div className="form-field">
-                <label className="form-label">Adresse Email</label>
-
-                <input
-                    placeholder="adresse mail"
-                    type="email"
-                    className="input max-w-full"
-                    value={email}
-                    onChange={handleMailType}
-                />                <label className="form-label">
-                <span className="form-label-alt">Please enter a valid email.</span>
-            </label>
-            </div>
-
             <Input
                 label="Adresse email"
                 type="email"
                 placeholder="mail@exemple.fr"
-                error=""
+                error={emailError}
                 value={email}
                 onChange={handleMailType}
             />
 
-            <div className="form-field">
-                <label className="form-label">Prénom</label>
 
-                <input
-                    placeholder="prenom"
-                    type="email"
-                    className="input max-w-full"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />                <label className="form-label">
-            </label>
-            </div>
 
-            <div className="form-field">
-                <label className="form-label">Nom</label>
+            <Input
+                label="Prénom"
+                type="prenom"
+                placeholder="prenom"
+                error={prenomError}
+                value={prenom}
+                onChange={handlePrenom}
+            />
 
-                <input
-                    placeholder="nom"
-                    type="email"
-                    className="input max-w-full"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />                <label className="form-label">
-            </label>
-            </div>
+            <Input
+                label="Nom"
+                type="nom"
+                placeholder="nom"
+                error={nomError}
+                value={nom}
+                onChange={handleNom}
+            />
 
-            <div className="form-field">
-                <label className="form-label">Mot de passe</label>
-                <div className="form-control">
-                    <input
-                        placeholder="mot de passe"
-                        type="password"
-                        className="input max-w-full"
-                        value={password}
-                        onChange={handleMailType}
-                    />                </div>
-            </div>
+            <Input
+                label="Password"
+                type="Password"
+                placeholder="mot de passe"
+                error={passwordError}
+                value={password}
+                onChange={handleMotDePasse}
+            />
 
             <div className="form-field">
                 <label className="form-label">Confirmation du mot de passe</label>
@@ -89,7 +116,7 @@ function Register () {
                         placeholder="confirmation mot de passe"
                         type="password"
                         className="input max-w-full"
-                        value={password}
+                        value={confirmPassword}
                         onChange={(e) => setPassword(e.target.value)}
                     />                </div>
             </div>
