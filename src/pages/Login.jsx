@@ -18,30 +18,30 @@ function Login () {
         setShowPassword(!showPassword);
     };
 
-    return <div className="mx-auto flex w-full max-w-sm flex-col gap-6">
+    return <div className="mx-auto flex w-full max-w-sm flex-col gap-6 mt-12">
         <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-semibold">Sign In</h1>
-            <p className="text-sm">Sign in to access your account</p>
+            <h1 className="text-4xl font-semibold">Connexion</h1>
+            <p className="text-sm">Connectez-vous à votre compte CrocoSheets</p>
         </div>
         <div className="form-group">
             <div className="form-field">
-                <label className="form-label">Email address</label>
+                <label className="form-label">Adresse email</label>
 
                 <input
-                    placeholder="Type here"
+                    placeholder="mail@exemple.fr"
                     type="email"
                     className="input max-w-full"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />                <label className="form-label">
-                    <span className="form-label-alt">Please enter a valid email.</span>
+
                 </label>
             </div>
             <div className="form-field">
-                <label className="form-label">Password</label>
+                <label className="form-label">Mot de passe</label>
                 <div className="form-control">
                     <input
-                        placeholder="Type here"
+                        placeholder="••••••••••"
                         type={showPassword ? 'text' : 'password'}
                         className="input max-w-full"
                         value={password}
@@ -52,28 +52,28 @@ function Login () {
                     </button>
                 </div>
             </div>
-            <div className="form-field">
+            <div className="form-field mt-3">
                 <div className="form-control justify-between">
                     <div className="flex gap-2">
-                        <input type="checkbox" className="checkbox" />
-                        <a href="#">Remember me</a>
+                        <input type="checkbox" className="switch" />
+                        <a href="#">Se souvenir de moi</a>
                     </div>
                     <label className="form-label">
-                        <a className="link link-underline-hover link-primary text-sm">Forgot your password?</a>
+                        <a className="link link-underline-hover link-primary text-sm">Mot de passe oublié?</a>
                     </label>
                 </div>
             </div>
             <div className="form-field pt-5">
                 <div className="form-control justify-between">
                     <button type="button" className="btn btn-primary w-full" onClick={handleSignIn}>
-                        Sign in
+                        Se connecter
                     </button>
                 </div>
             </div>
 
             <div className="form-field">
                 <div className="form-control justify-center">
-                    <Link to='/Register' className="link link-underline-hover link-primary text-sm">Don't have an account yet? Sign up.</Link>
+                    <Link to='/Register' className="link link-underline-hover link-primary text-sm">Vous n'avez pas encore de compte? Inscrivez-vous!</Link>
                 </div>
             </div>
         </div>
