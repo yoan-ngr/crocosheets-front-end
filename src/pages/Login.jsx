@@ -73,7 +73,7 @@ function Login () {
 
             <div className="form-field">
                 <div className="form-control justify-center">
-                    <Link to='/Register' className="link link-underline-hover link-primary text-sm">Vous n'avez pas encore de compte? Inscrivez-vous!</Link>
+                    <Link to='/register' className="link link-underline-hover link-primary text-sm">Vous n'avez pas encore de compte? Inscrivez-vous!</Link>
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import Logo from "../assets/crocosheets.png";
 
 function Navbar () {
 
@@ -7,7 +8,7 @@ function Navbar () {
 
     return <div className="navbar rounded-lg">
         <div className="navbar-start">
-            <Link className="navbar-item text-lg font-semibold" to='/' >CrocoSheets</Link>
+            <Link className="navbar-item text-lg font-semibold" to='/' ><img src={Logo} className="w-8 h-8 inline" /><span className="align-middle ml-1">CrocoSheets</span></Link>
         </div>
         <div className="navbar-end">
             {

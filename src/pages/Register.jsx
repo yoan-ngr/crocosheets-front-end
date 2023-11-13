@@ -1,5 +1,8 @@
 import React, {useState} from "react";
 import Input from "../components/Input.jsx";
+import {Link} from "react-router-dom";
+import axios from "axios";
+import {AlertError, AlertSuccess} from "../components/Alert.jsx";
 
 function Register () {
 
@@ -14,9 +17,29 @@ function Register () {
     const [nomError, setnomError] = useState('');
     const [passwordError, setPasswordError] = useState('');
 
+    const [generalError, setGeneralError] = useState("");
+    const [success, setSuccess] = useState(false);
+
     const handleSignUp = () => {
         console.log('Email:', email);
         console.log('Password:', password);
+
+        let formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+        axios.post("http://localhost:3000/api/user/", {
+            "email" : email,
+            "password" : password
+        })
+            .then(() => {
+                setGeneralError("");
+                setSuccess(true)
+            })
+            .catch((e) => {
+                setGeneralError(e.response.data.error);
+                //console.log(e)
+                setSuccess(false)
+            });
     };
 
     const handleMailType = (e) => {
@@ -70,6 +93,10 @@ function Register () {
             <h1 className="text-3xl font-semibold">Inscription</h1>
             <p className="text-sm">Creez un compte pour accéder à CrocoSHEET</p>
         </div>
+
+        {generalError !== "" && <AlertError title={"Oups ! Une erreur est survenue."} details={"" + generalError} />}
+        {success && <AlertSuccess title={"Succès !"} details={"votre inscription a été réalisée avec succès !"} />}
+
         <div className="form-group">
             <Input
                 label="Adresse email"
@@ -131,7 +158,7 @@ function Register () {
 
             <div className="form-field">
                 <div className="form-control justify-center">
-                    <a className="link link-underline-hover link-primary text-sm">Don't have an account yet? Sign up.</a>
+                    <Link to="/login" className="link link-underline-hover link-primary text-sm">Don't have an account yet? Sign up.</Link>
                 </div>
             </div>
         </div>
