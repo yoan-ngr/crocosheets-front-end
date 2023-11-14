@@ -4,7 +4,7 @@ import Logo from "../assets/crocosheets.png";
 
 function Navbar () {
 
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(true);
 
     return <div className="navbar rounded-lg">
         <div className="navbar-start">
