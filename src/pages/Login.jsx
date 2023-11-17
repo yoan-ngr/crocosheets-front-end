@@ -21,7 +21,7 @@ function Login () {
             if (!err){
                 axios.post('api/user/auth', {
                     email: email,
-                    password: password
+                    password: result
                 })
                     .then(function (response) {
                         console.log(response);
