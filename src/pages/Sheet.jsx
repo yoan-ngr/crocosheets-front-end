@@ -39,10 +39,11 @@ function Sheet() {
                 cell_focus = selectedCellElement;
             } else if (selectedCellElement && cell_focus === selectedCellElement) {
                 selectedCellElement.blur(); // Supprime le focus de la cellule en cours d'édition
+                cell_focus = null;
                 console.log("222222222222222222222")
             }
 
-        }else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        }else if ((['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) && cell_focus !== document.activeElement) {
             e.preventDefault(); // Empêche le défilement de la page avec les touches de direction
 
             if (e.key === 'ArrowUp' && selectedCell.row > 0) {
