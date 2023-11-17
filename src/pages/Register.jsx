@@ -100,7 +100,7 @@ function Register () {
         <div className="form-group">
             <Input
                 label="Adresse email"
-                type="email"
+                type="Email"
                 placeholder="mail@exemple.fr"
                 error={emailError}
                 value={email}
@@ -111,7 +111,7 @@ function Register () {
 
             <Input
                 label="Prénom"
-                type="prenom"
+                type="Prenom"
                 placeholder="prenom"
                 error={prenomError}
                 value={prenom}
@@ -130,7 +130,7 @@ function Register () {
             <Input
                 label="Password"
                 type="Password"
-                placeholder="mot de passe"
+                placeholder="Mot de passe"
                 error={passwordError}
                 value={password}
                 onChange={handleMotDePasse}
@@ -140,7 +140,7 @@ function Register () {
                 <label className="form-label">Confirmation du mot de passe</label>
                 <div className="form-control">
                     <input
-                        placeholder="confirmation mot de passe"
+                        placeholder="Confirmation mot de passe"
                         type="password"
                         className="input max-w-full"
                         value={confirmPassword}
