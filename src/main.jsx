@@ -11,11 +11,13 @@ import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Sheet from "./pages/Sheet";
 import Home from "./pages/Home.jsx";
+import ErrorPage from "./pages/ErrorPage.jsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <div><Navbar /><Outlet/></div>,
+        errorElement: <div><Navbar /><ErrorPage/></div>,
         children : [
             {
                 path: "/",
