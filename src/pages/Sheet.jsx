@@ -76,8 +76,8 @@ function Sheet() {
                                 key={colIndex}
                                 id={`cell-${rowIndex}-${colIndex}`}
                                 contentEditable={selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex}
-                                className={`w-48 max-w-[6rem] overflow-x-hidden border-solid font-mono border border-black p-2 ${
-                                    selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex ? 'bg-green-800' : ''
+                                className={`w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black font-mono p-2 ${
+                                    selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex ? 'bg-green-500 bg-opacity-25' : ''
                                 }`}
                                 onClick={() => handleCellClick(rowIndex, colIndex)}
                                 onDoubleClick={handleCellDoubleClick}
