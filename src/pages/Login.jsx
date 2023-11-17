@@ -3,6 +3,8 @@ import {Link} from "react-router-dom";
 import EyeSlashIcon from "../components/icons/EyeSlashIcon.jsx";
 import EyeIcon from "../components/icons/EyeIcon.jsx";
 import axios, {Axios} from "axios";
+import bcrypt from "bcrypt";
+import {AlertError, AlertSuccess} from "../components/Alert.jsx";
 
 
 function Login () {
@@ -11,17 +13,29 @@ function Login () {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
+    const [generalError, setGeneralError] = useState("");
+    const [success, setSuccess] = useState(false);
     const handleSignIn = () => {
-        axios.post('api/user/auth', {
-            email: email,
-            password: password
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                alert(error);
-            });
+
+        bcrypt.hash(password, 10,function (err, result){
+            if (!err){
+                axios.post('api/user/auth', {
+                    email: email,
+                    password: password
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            }else {
+                setGeneralError("problème de hachage");
+                setSuccess(false)
+            }
+        });
+
+
     };
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -32,6 +46,8 @@ function Login () {
             <h1 className="text-4xl font-semibold">Connexion</h1>
             <p className="text-sm">Connectez-vous à votre compte CrocoSheets</p>
         </div>
+        {generalError !== "" && <AlertError title={"Oups ! Une erreur est survenue."} details={"" + generalError} />}
+        {success && <AlertSuccess title={"Succès !"} details={"votre inscription a été réalisée avec succès !"} />}
         <div className="form-group">
             <div className="form-field">
                 <label className="form-label">Adresse email</label>

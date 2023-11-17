@@ -3,6 +3,7 @@ import Input from "../components/Input.jsx";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {AlertError, AlertSuccess} from "../components/Alert.jsx";
+import bcrypt from "bcrypt";
 
 function Register () {
 
@@ -21,25 +22,29 @@ function Register () {
     const [success, setSuccess] = useState(false);
 
     const handleSignUp = () => {
-        console.log('Email:', email);
-        console.log('Password:', password);
-
-        let formData = new FormData();
-        formData.append("email", email);
-        formData.append("password", password);
-        axios.post("http://localhost:3000/api/user/", {
-            "email" : email,
-            "password" : password
-        })
-            .then(() => {
-                setGeneralError("");
-                setSuccess(true)
-            })
-            .catch((e) => {
-                setGeneralError(e.response.data.error);
-                //console.log(e)
+        bcrypt.hash(password, 10,function (err, result){
+            if (!err){
+                axios.post("http://localhost:3000/api/user/", {
+                    "email" : email,
+                    "password" : result,
+                    "nom" : nom,
+                    "prenom" : prenom
+                })
+                    .then(() => {
+                        setGeneralError("");
+                        setSuccess(true)
+                    })
+                    .catch((e) => {
+                        setGeneralError(e.response.data.error);
+                        setSuccess(false)
+                    });
+            }else {
+                setGeneralError("problème de hachage");
                 setSuccess(false)
-            });
+            }
+        });
+
+
     };
 
     const handleMailType = (e) => {
