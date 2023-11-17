@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {Link} from "react-router-dom";
 import EyeSlashIcon from "../components/icons/EyeSlashIcon.jsx";
 import EyeIcon from "../components/icons/EyeIcon.jsx";
+import axios, {Axios} from "axios";
 
 
 function Login () {
@@ -11,8 +12,16 @@ function Login () {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleSignIn = () => {
-        console.log('Email:', email);
-        console.log('Password:', password);
+        axios.post('api/user/auth', {
+            email: email,
+            password: password
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                alert(error);
+            });
     };
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
