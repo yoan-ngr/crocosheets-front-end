@@ -3,7 +3,7 @@ import Input from "../components/Input.jsx";
 import {Link} from "react-router-dom";
 import axios from "axios";
 import {AlertError, AlertSuccess} from "../components/Alert.jsx";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 function Register () {
 

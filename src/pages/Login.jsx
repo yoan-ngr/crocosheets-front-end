@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import EyeSlashIcon from "../components/icons/EyeSlashIcon.jsx";
 import EyeIcon from "../components/icons/EyeIcon.jsx";
 import axios, {Axios} from "axios";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import {AlertError, AlertSuccess} from "../components/Alert.jsx";
 
 
