@@ -4,8 +4,10 @@ function Sheet() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const [selectedCell, setSelectedCell] = useState(null);
     let cell_focus;
+
+
     const handleCellClick = (rowIndex, colIndex) => {
-        setSelectedCell({ row: rowIndex, col: colIndex });
+        changer_de_case(rowIndex,colIndex)
     };
 
     const handleCellDoubleClick = (e) => {
@@ -23,14 +25,18 @@ function Sheet() {
         }
     };
 
+    function changer_de_case(rowIndex,colIndex){
+        console.log(selectedCell)
+        if(selectedCell != null) console.log(`${selectedCell.row} - ${selectedCell.col}`);
+        if(rowIndex>=0 && rowIndex<=25 && colIndex>=0 && colIndex<=25){
+            setSelectedCell({ row: rowIndex, col: colIndex });
+        }
+    }
     // Gestion de l'événement global pour l'appui sur "Entrée"
 
     const handleGlobalKeyDown = (e) => {
         if (e.key === 'Enter' && selectedCell ) {
             const selectedCellElement = document.querySelector(`#cell-${selectedCell.row}-${selectedCell.col}`);
-            console.log("111111111111111111111111")
-            console.log("cell_focus : " + cell_focus)
-            console.log("select : " + selectedCellElement.id)
 
             if (selectedCellElement && (cell_focus !== selectedCellElement)) {
                 e.preventDefault(); // Empêche l'ajout de la nouvelle ligne
@@ -40,24 +46,21 @@ function Sheet() {
             } else if (selectedCellElement && cell_focus === selectedCellElement) {
                 selectedCellElement.blur(); // Supprime le focus de la cellule en cours d'édition
                 cell_focus = null;
-                console.log("222222222222222222222")
             }
 
         }else if ((['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) && cell_focus !== document.activeElement) {
             e.preventDefault(); // Empêche le défilement de la page avec les touches de direction
 
-            if (e.key === 'ArrowUp' && selectedCell.row > 0) {
-                setSelectedCell({ row: selectedCell.row - 1, col: selectedCell.col });
-            } else if (e.key === 'ArrowDown' && selectedCell.row < 25) {
-                setSelectedCell({ row: selectedCell.row + 1, col: selectedCell.col });
-            } else if (e.key === 'ArrowLeft' && selectedCell.col > 0) {
-                setSelectedCell({ row: selectedCell.row, col: selectedCell.col - 1 });
-            } else if (e.key === 'ArrowRight' && selectedCell.col < 25) {
-                setSelectedCell({ row: selectedCell.row, col: selectedCell.col + 1 });
+            if (e.key === 'ArrowUp') {
+                changer_de_case(selectedCell.row - 1,selectedCell.col )
+            } else if (e.key === 'ArrowDown' ) {
+                changer_de_case(selectedCell.row + 1,selectedCell.col )
+            } else if (e.key === 'ArrowLeft') {
+                changer_de_case(selectedCell.row ,selectedCell.col -1 )
+            } else if (e.key === 'ArrowRight') {
+                changer_de_case(selectedCell.row ,selectedCell.col +1 )
             }
         }
-
-
     };
 
 
@@ -85,11 +88,11 @@ function Sheet() {
                 </thead>
                 <tbody>
                 {Array.from({ length: 26 }, (_, rowIndex) => (
-                    <tr key={rowIndex}>
+                    <tr key={`${rowIndex}`}>
                         <td className="w-12">{alphabet.charAt(rowIndex)}</td>
                         {Array.from({ length: 26 }, (_, colIndex) => (
-                            <td id = {rowIndex+"-"+colIndex }
-                                key={colIndex}
+                            <td
+                                key={`cell-${rowIndex}-${colIndex}`} // Add a unique key here
                                 id={`cell-${rowIndex}-${colIndex}`}
                                 contentEditable={selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex}
                                 className={`w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black font-mono p-2 ${
