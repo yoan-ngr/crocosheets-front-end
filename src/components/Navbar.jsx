@@ -1,10 +1,13 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import Logo from "../assets/crocosheets.png";
+import {useCookies} from "react-cookie";
 
 function Navbar () {
 
     const [loggedIn, setLoggedIn] = useState(true);
+
+    const [cookies, setCookies] = useCookies(["user"])
 
     return <div className="navbar rounded-lg">
         <div className="navbar-start">
@@ -12,7 +15,7 @@ function Navbar () {
         </div>
         <div className="navbar-end">
             {
-                loggedIn ? <div className="avatar avatar-ring avatar-md">
+                cookies.user ? <div className="avatar avatar-ring avatar-md">
                     <div className="dropdown-container">
                         <div className="dropdown">
                             <label className="btn btn-ghost flex cursor-pointer px-0" tabIndex="0">

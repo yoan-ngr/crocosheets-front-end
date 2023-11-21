@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import {Link} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Link, redirect} from "react-router-dom";
 import EyeSlashIcon from "../components/icons/EyeSlashIcon.jsx";
 import EyeIcon from "../components/icons/EyeIcon.jsx";
 import axios, {Axios} from "axios";
 import bcrypt from "bcryptjs";
 import {AlertError, AlertSuccess} from "../components/Alert.jsx";
+import {useCookies} from "react-cookie";
 
 
 function Login () {
@@ -14,24 +15,29 @@ function Login () {
     const [showPassword, setShowPassword] = useState(false);
 
     const [generalError, setGeneralError] = useState("");
-    const [success, setSuccess] = useState(false);
+
+    const [cookies, setCookie] = useCookies(["user"]);
+
     const handleSignIn = () => {
 
-        bcrypt.hash(password, 10,function (err, result){
+        bcrypt.hash(password, 10, function (err, result){
             if (!err){
-                axios.post('api/user/auth', {
+                axios.post('http://localhost:3000/api/user/auth', {
                     email: email,
-                    password: result
+                    password: password
                 })
                     .then(function (response) {
                         console.log(response);
+                        setCookie("user", response.data);
+                        setGeneralError("");
                     })
                     .catch(function (error) {
-                        alert(error);
+                        setGeneralError("Mot de passe ou adresse e-mail invalide.");
+                        console.log(error)
+                        //alert(error);
                     });
             }else {
                 setGeneralError("problème de hachage");
-                setSuccess(false)
             }
         });
 
@@ -47,7 +53,6 @@ function Login () {
             <p className="text-sm">Connectez-vous à votre compte CrocoSheets</p>
         </div>
         {generalError !== "" && <AlertError title={"Oups ! Une erreur est survenue."} details={"" + generalError} />}
-        {success && <AlertSuccess title={"Succès !"} details={"votre inscription a été réalisée avec succès !"} />}
         <div className="form-group">
             <div className="form-field">
                 <label className="form-label">Adresse email</label>

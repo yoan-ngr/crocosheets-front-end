@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Sheet from "./pages/Sheet";
 import Home from "./pages/Home.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
+import {CookiesProvider} from "react-cookie";
 
 const router = createBrowserRouter([
     {
@@ -45,6 +46,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-      <RouterProvider router={router} />
+      <CookiesProvider defaultSetOptions={{ path: '/' }}>
+          <RouterProvider router={router} />
+      </CookiesProvider>
   </React.StrictMode>,
 )

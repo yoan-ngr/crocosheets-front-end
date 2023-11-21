@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import axios from "axios";
 import {AlertError, AlertSuccess} from "../components/Alert.jsx";
 import bcrypt from "bcryptjs";
+import PasswordInput from "../components/PasswordInput.jsx";
 
 function Register () {
 
@@ -11,24 +12,28 @@ function Register () {
     const [prenom, setPrenom] = useState('');
     const [nom, setNom] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setconfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const [emailError, setEmailError] = useState('');
     const [prenomError, setprenomError] = useState('');
     const [nomError, setnomError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
     const [generalError, setGeneralError] = useState("");
     const [success, setSuccess] = useState(false);
 
     const handleSignUp = () => {
-        bcrypt.hash(password, 10,function (err, result){
+
+        // TODO : revérifier les champs avant envoi
+
+        bcrypt.hash(password, 10, function (err, result){
             if (!err){
                 axios.post("http://localhost:3000/api/user/", {
                     "email" : email,
-                    "password" : result,
-                    "nom" : nom,
-                    "prenom" : prenom
+                    "password" : password,
+                    "last_name" : nom,
+                    "first_name" : prenom
                 })
                     .then(() => {
                         setGeneralError("");
@@ -53,9 +58,9 @@ function Register () {
         if (re.test(e.target.value)){
             setEmailError("")
         }else {
-            setEmailError("veuillez entrer une email valide")
+            setEmailError("Veuillez entrer une adresse email valide.")
         }
-        console.log(emailError)
+        //console.log(emailError)
         setEmail(e.target.value)
     };
 
@@ -65,7 +70,7 @@ function Register () {
             setprenomError("")
 
         }else {
-            setprenomError("veuillez entrer un prenom valide")
+            setprenomError("Veuillez entrer un prénom valide, d'au moins 2 caractères.")
         }
         setPrenom(e.target.value)
     };
@@ -76,7 +81,7 @@ function Register () {
             setnomError("")
 
         }else {
-            setnomError("veuillez entrer un nom valide")
+            setnomError("Veuillez entrer un nom valide, d'au moins 2 caractères.")
         }
         setNom(e.target.value)
     };
@@ -87,25 +92,31 @@ function Register () {
         if (re.test(e.target.value)){
             setPasswordError("")
         }else {
-            setPasswordError("veuillez entrer un mot de passe d'au moins 8 caractères, une majuscule, une minuscule et un caractère spécial")
+            setPasswordError("Veuillez entrer un mot de passe composé d'au moins 8 caractères, dont une majuscule, une minuscule et un caractère spécial.")
         }
-        setPassword(e.target.value)
+        setPassword(e.target.value);
+        setConfirmPasswordError(e.target.value != confirmPassword ? "Les mots de passe doivent être identiques." : "");
     };
 
+    const handleMdpConfirmation = (e) => {
+        setConfirmPasswordError(e.target.value != password ? "Les mots de passe doivent être identiques." : "");
+        setConfirmPassword(e.target.value);
+    }
 
-    return <div className="mx-auto flex w-full max-w-sm flex-col gap-6">
+
+    return <div className="mx-auto flex w-full max-w-sm flex-col gap-6 mt-12">
         <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-semibold">Inscription</h1>
-            <p className="text-sm">Creez un compte pour accéder à CrocoSHEET</p>
+            <h1 className="text-4xl font-semibold">Inscription</h1>
+            <p className="text-sm">Creez un compte pour accéder à CrocoSheets</p>
         </div>
 
         {generalError !== "" && <AlertError title={"Oups ! Une erreur est survenue."} details={"" + generalError} />}
-        {success && <AlertSuccess title={"Succès !"} details={"votre inscription a été réalisée avec succès !"} />}
+        {success && <AlertSuccess title={"Succès !"} details={"Votre inscription a été réalisée avec succès !"} />}
 
         <div className="form-group">
             <Input
                 label="Adresse email"
-                type="Email"
+                type="email"
                 placeholder="mail@exemple.fr"
                 error={emailError}
                 value={email}
@@ -116,8 +127,8 @@ function Register () {
 
             <Input
                 label="Prénom"
-                type="Prenom"
-                placeholder="prenom"
+                type="text"
+                placeholder="Prénom"
                 error={prenomError}
                 value={prenom}
                 onChange={handlePrenom}
@@ -125,45 +136,38 @@ function Register () {
 
             <Input
                 label="Nom"
-                type="nom"
-                placeholder="nom"
+                type="text"
+                placeholder="Nom"
                 error={nomError}
                 value={nom}
                 onChange={handleNom}
             />
 
-            <Input
-                label="Password"
-                type="Password"
-                placeholder="Mot de passe"
+            <PasswordInput
+                label="Mot de passe"
                 error={passwordError}
                 value={password}
                 onChange={handleMotDePasse}
-            />
+                />
 
-            <div className="form-field">
-                <label className="form-label">Confirmation du mot de passe</label>
-                <div className="form-control">
-                    <input
-                        placeholder="Confirmation mot de passe"
-                        type="password"
-                        className="input max-w-full"
-                        value={confirmPassword}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />                </div>
-            </div>
+            <PasswordInput
+                label="Confirmer le mot de passe"
+                error={confirmPasswordError}
+                value={confirmPassword}
+                onChange={handleMdpConfirmation}
+            />
 
             <div className="form-field pt-5">
                 <div className="form-control justify-between">
                     <button type="button" className="btn btn-success w-full" onClick={handleSignUp}>
-                        Sign Up
+                        S'inscrire
                     </button>
                 </div>
             </div>
 
             <div className="form-field">
                 <div className="form-control justify-center">
-                    <Link to="/login" className="link link-underline-hover link-primary text-sm">Don't have an account yet? Sign up.</Link>
+                    <Link to="/login" className="link link-underline-hover link-primary text-sm">Vous avez déjà un compte? Connectez-vous !</Link>
                 </div>
             </div>
         </div>
