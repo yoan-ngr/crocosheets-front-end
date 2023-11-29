@@ -40,7 +40,8 @@ function Register () {
                         setSuccess(true)
                     })
                     .catch((e) => {
-                        setGeneralError(e.response.data.error);
+                        console.log(e)
+                        setGeneralError(e.response);
                         setSuccess(false)
                     });
             }else {

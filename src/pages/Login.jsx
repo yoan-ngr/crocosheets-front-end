@@ -22,7 +22,7 @@ function Login () {
 
         bcrypt.hash(password, 10, function (err, result){
             if (!err){
-                axios.post('http://localhost:3000/api/user/auth', {
+                axios.post('http://localhost:3000/api/auth/login', {
                     email: email,
                     password: password
                 })
