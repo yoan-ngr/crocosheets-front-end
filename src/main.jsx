@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Sheet from "./pages/Sheet";
 import Home from "./pages/Home.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
+import Profile from "./pages/Profile.jsx";
 import {CookiesProvider} from "react-cookie";
 
 const router = createBrowserRouter([
@@ -39,7 +40,11 @@ const router = createBrowserRouter([
             {
                 path: "/sheet",
                 element: <Sheet />,
-            }
+            },
+            {
+                path: "/profile",
+                element: <Profile/>,
+            },
         ]
     },
 ]);
