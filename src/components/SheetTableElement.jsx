@@ -1,10 +1,16 @@
 import Trashbin from "./icons/Trashbin.jsx";
 
 function SheetTableElement (props) {
-    return <tr className="cursor-pointer" onClick={props.onOpen}>
+
+    const handleDelete = () => {
+        props.setCurrentFileDeleteName(props.name)
+        props.setCurrentFileDeleteId(props.id)
+    }
+
+    return <tr className="cursor-pointer" onClick={props.onOpen} id={props.id}>
         <th>{props.name}</th>
         <td>{props.modificationDate}</td>
-        <td><button className="btn btn-solid-error" onClick={props.onDelete}><Trashbin /></button></td>
+        <td><label className="btn btn-solid-error" htmlFor="delete-modal" onClick={handleDelete}><Trashbin /></label></td>
     </tr>
 }
 
