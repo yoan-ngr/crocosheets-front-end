@@ -18,13 +18,52 @@ function Sheet() {
         e.target.focus();
         cell_focus = e.target;
     };
-    function enregistrer_case(rowIndex,colIndex){ // fonction appelé apres qu'une case a été modifier
+    function enregistrer_case(rowIndex, colIndex) {
         const updatedCellValues = [...cellValues];
-        updatedCellValues[rowIndex][colIndex] = document.getElementById(`cell-${rowIndex}-${colIndex}`).textContent.replace(/\n/g, '');
-        setCellValues(updatedCellValues);
+        const inputValue = document.getElementById(`cell-${rowIndex}-${colIndex}`).textContent.replace(/\n/g, '');
 
-        serveur_modifier_case(rowIndex,colIndex)
+        if (inputValue.startsWith('=')) {
+            // Evaluate formula
+            const result = evalFormula(inputValue.substring(1));
+            updatedCellValues[rowIndex][colIndex] = result;
+        } else {
+            updatedCellValues[rowIndex][colIndex] = inputValue;
+        }
+
+        setCellValues(updatedCellValues);
+        serveur_modifier_case(rowIndex, colIndex);
     }
+
+    function evalFormula(formula) {
+        const regex = /[A-Z]\d+/g;
+        const references = formula.match(regex);
+
+        if (references) {
+            references.forEach((ref) => {
+                const [refCol, refRow] = parseReference(ref);
+                console.log(refCol +" "+refRow)
+
+                const refValue = cellValues[refRow][refCol];
+                formula = formula.replace(ref, refValue);
+            });
+        }
+
+        try {
+            return eval(formula);
+        } catch (error) {
+            console.error('Error evaluating formula:', error);
+            return '#ERROR';
+        }
+    }
+
+    function parseReference(reference) {
+        const refCol = parseInt(reference.match(/\d+/)[0]);
+        const refRow = alphabet.indexOf(reference.match(/[A-Z]+/)[0]);
+        return [refCol, refRow];
+    }
+
+
+
     function serveur_modifier_case(rowIndex,colIndex){
         console.log("le serveur doit metre a jour la case ("+rowIndex+" ; "+colIndex +") avec la valeur : "+ cellValues[rowIndex][colIndex])
     }
@@ -117,6 +156,7 @@ function Sheet() {
             </table>
         </div>
     );
+
 }
 
 export default Sheet;
