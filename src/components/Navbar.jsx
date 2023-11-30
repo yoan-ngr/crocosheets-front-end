@@ -12,7 +12,14 @@ function Navbar () {
 
     const handleLogOut = () => {
         setCookies("user", null);
-        // TODO requête déconnexion
+        axios.post('http://localhost:3000/api/auth/logout', {
+            id : cookies.user.id
+        })
+        .then(result => {
+            console.log("Déconnecté")
+        }).catch(err => {
+            console.log(err)
+        });
     }
 
     return <div className="navbar rounded-lg">
@@ -25,7 +32,7 @@ function Navbar () {
                     <div className="dropdown-container">
                         <div className="dropdown">
                             <label className="btn btn-ghost flex cursor-pointer px-0" tabIndex="0">
-                                <div>{cookies.user.first_name.charAt(0).toUpperCase() + cookies.user.last_name.charAt(0).toUpperCase()}</div>
+                                <div>{cookies.user?.first_name?.charAt(0).toUpperCase() + cookies.user?.last_name?.charAt(0).toUpperCase()}</div>
                             </label>
                             <div className="dropdown-menu dropdown-menu-bottom-left">
                                 <Link to='/dashboard' className="dropdown-item text-sm">Mes documents</Link>
