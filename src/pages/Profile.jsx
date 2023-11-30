@@ -12,11 +12,11 @@ function Profile () {
         <PageTitle text="Profil" />
         <div className="mx-16 text-center">
             <p className="text-xl" >Vos informations</p>
-            <div className="mx-[36rem] my-12" >
-                <p className="text-xl text-left my-5" >Nom</p>
-                <p className="text-xl text-left my-5" >Prénom</p>
-                <p className="text-xl text-left my-5" >Email</p>
-                <p className="text-xl text-left my-5" >Mot de passe</p>
+            <div className="mx-[42rem] my-12" >
+                <div className=" flex justify-between text-xl text-left my-5"><p>Nom</p><p>{cookies.user.last_name}</p></div>
+                <div className=" flex justify-between text-xl text-left my-5"><p>Prénom</p><p>{cookies.user.first_name}</p></div>
+                <div className=" flex justify-between text-xl text-left my-5"><p>Email</p><p>okapigenant@hotmail.fr</p></div>
+                <div className=" flex justify-between text-xl text-left my-5"><p>Mot de passe</p><p>**********</p></div>
             </div>
         </div>
 
