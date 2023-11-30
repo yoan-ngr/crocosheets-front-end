@@ -3,34 +3,35 @@ import React, { useState, useEffect } from 'react';
 function Sheet() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const [selectedCell, setSelectedCell] = useState(null);
-    const [cellValues, setCellValues] = useState(Array.from({ length: 26 }, () => Array.from({ length: 26 }, () => '')));
+    const [cellData, setCellData] = useState(Array.from({ length: 26 }, () => Array.from({ length: 26 }, () => ({ formula: '', value: '' }))));
     let cell_focus;
 
-
     const handleCellClick = (rowIndex, colIndex) => {
-        if(selectedCell != null && cell_focus != null) enregistrer_case(selectedCell.row,selectedCell.col)
-        changer_de_case(rowIndex,colIndex)
-
+        if (selectedCell != null && cell_focus != null) enregistrer_case(selectedCell.row, selectedCell.col);
+        changer_de_case(rowIndex, colIndex);
     };
 
     const handleCellDoubleClick = (e) => {
+        const rowIndex = parseInt(e.target.getAttribute('data-row'));
+        const colIndex = parseInt(e.target.getAttribute('data-col'));
+
         e.target.contentEditable = true;
+        e.target.innerHTML = cellData[rowIndex][colIndex].formula;
         e.target.focus();
         cell_focus = e.target;
     };
+
     function enregistrer_case(rowIndex, colIndex) {
-        const updatedCellValues = [...cellValues];
+        const updatedCellData = [...cellData];
         const inputValue = document.getElementById(`cell-${rowIndex}-${colIndex}`).textContent.replace(/\n/g, '');
 
         if (inputValue.startsWith('=')) {
-            // Evaluate formula
-            const result = evalFormula(inputValue.substring(1));
-            updatedCellValues[rowIndex][colIndex] = result;
+            updatedCellData[rowIndex][colIndex] = { formula: inputValue, value: evalFormula(inputValue.substring(1)) };
         } else {
-            updatedCellValues[rowIndex][colIndex] = inputValue;
+            updatedCellData[rowIndex][colIndex] = { formula: '', value: inputValue };
         }
 
-        setCellValues(updatedCellValues);
+        setCellData(updatedCellData);
         serveur_modifier_case(rowIndex, colIndex);
     }
 
@@ -41,9 +42,7 @@ function Sheet() {
         if (references) {
             references.forEach((ref) => {
                 const [refCol, refRow] = parseReference(ref);
-                console.log(refCol +" "+refRow)
-
-                const refValue = cellValues[refRow][refCol];
+                const refValue = cellData[refRow][refCol].value;
                 formula = formula.replace(ref, refValue);
             });
         }
@@ -62,14 +61,14 @@ function Sheet() {
         return [refCol, refRow];
     }
 
-
-
-    function serveur_modifier_case(rowIndex,colIndex){
-        console.log("le serveur doit metre a jour la case ("+rowIndex+" ; "+colIndex +") avec la valeur : "+ cellValues[rowIndex][colIndex])
+    function serveur_modifier_case(rowIndex, colIndex) {
+        console.log("Le serveur doit mettre à jour la case (" + rowIndex + " ; " + colIndex + ") avec la formule : " + cellData[rowIndex][colIndex].formula);
+        console.log("Nouvelle valeur : " + cellData[rowIndex][colIndex].value);
     }
-    function changer_de_case(rowIndex,colIndex) {
+
+    function changer_de_case(rowIndex, colIndex) {
         if (rowIndex >= 0 && rowIndex <= 25 && colIndex >= 0 && colIndex <= 25) {
-            setSelectedCell({row: rowIndex, col: colIndex});
+            setSelectedCell({ row: rowIndex, col: colIndex });
         }
     }
 
@@ -84,7 +83,7 @@ function Sheet() {
 
     useEffect(() => {
         const handleGlobalKeyDown = (e) => {
-            if (e.key === 'Enter' && selectedCell ) {
+            if (e.key === 'Enter' && selectedCell) {
                 const selectedCellElement = document.querySelector(`#cell-${selectedCell.row}-${selectedCell.col}`);
 
                 if (selectedCellElement && (cell_focus !== selectedCellElement)) {
@@ -97,27 +96,27 @@ function Sheet() {
                     cell_focus = null;
                 }
 
-            }else if ((['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) && cell_focus !== document.activeElement) {
+            } else if ((['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) && cell_focus !== document.activeElement) {
                 e.preventDefault(); // Empêche le défilement de la page avec les touches de direction
 
                 if (e.key === 'ArrowUp') {
-                    changer_de_case(selectedCell.row - 1,selectedCell.col )
-                } else if (e.key === 'ArrowDown' ) {
-                    changer_de_case(selectedCell.row + 1,selectedCell.col )
+                    changer_de_case(selectedCell.row - 1, selectedCell.col)
+                } else if (e.key === 'ArrowDown') {
+                    changer_de_case(selectedCell.row + 1, selectedCell.col)
                 } else if (e.key === 'ArrowLeft') {
-                    changer_de_case(selectedCell.row ,selectedCell.col -1 )
+                    changer_de_case(selectedCell.row, selectedCell.col - 1)
                 } else if (e.key === 'ArrowRight') {
-                    changer_de_case(selectedCell.row ,selectedCell.col +1 )
+                    changer_de_case(selectedCell.row, selectedCell.col + 1)
                 }
             }
         };
-
 
         window.addEventListener('keydown', handleGlobalKeyDown);
         return () => {
             window.removeEventListener('keydown', handleGlobalKeyDown);
         };
     }, [selectedCell]);
+
 
     return (
         <div className="overflow-scroll">
@@ -140,15 +139,21 @@ function Sheet() {
                             <td
                                 key={`cell-${rowIndex}-${colIndex}`}
                                 id={`cell-${rowIndex}-${colIndex}`}
+                                data-row={rowIndex}
+                                data-col={colIndex}
                                 contentEditable={selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex}
+                                suppressContentEditableWarning={true}
                                 className={`w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black font-mono p-2 ${
                                     selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex ? 'bg-green-500 bg-opacity-25' : ''
                                 }`}
                                 onClick={() => handleCellClick(rowIndex, colIndex)}
                                 onDoubleClick={handleCellDoubleClick}
                                 onKeyDown={(e) => handleCellKeyDown(e, rowIndex, colIndex)}
-                                dangerouslySetInnerHTML={{ __html: cellValues[rowIndex][colIndex] }}
-                            />
+                            >
+                                {selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex
+                                    ? cellData[rowIndex][colIndex].formula
+                                    : cellData[rowIndex][colIndex].value}
+                            </td>
                         ))}
                     </tr>
                 ))}
@@ -156,7 +161,6 @@ function Sheet() {
             </table>
         </div>
     );
-
 }
 
 export default Sheet;
