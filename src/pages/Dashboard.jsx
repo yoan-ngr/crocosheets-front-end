@@ -1,10 +1,9 @@
 import PageTitle from "../components/PageTitle.jsx";
 import Trashbin from "../components/icons/Trashbin.jsx";
-import {Link} from "react-router-dom";
-import bcrypt from "bcryptjs";
+import {Link, redirect, useNavigate} from "react-router-dom";
 import axios from "axios";
 import SheetTableElement from "../components/SheetTableElement.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 
 function Dashboard () {
@@ -12,29 +11,31 @@ function Dashboard () {
     const [currentFileNameToDelete, setCurrentFileNameToDelete] = useState("");
     const [currentFileIdToDelete, setCurrentFileIdToDelete] = useState(-1);
 
+    const [cookies, setCookies] = useCookies();
+
     const handleFileDelete = () => {
 
     }
 
 
-    const [cookies, setCookies] = useCookies();
+
     const handleCreateSheet = () => {
 
-                axios.post('http://localhost:3000/api/sheet/', {
-                    proprietaire: cookies.user?.id
-                })
-                    .then(function (response) {
-                        console.log(response);
-                        setCookies("user", response.data);
-                        //setGeneralError("");
-                    })
-                    .catch(function (error) {
-                        //setGeneralError("id du compte invalid.");
-                        console.log(error)
-                        //alert(error);
-                    });
+        axios.post('http://localhost:3000/api/sheet/', {
+            proprietaire: cookies.user?.id
+        })
+            .then(function (response) {
+                console.log(response);
+                setCookies("user", response.data);
+                //setGeneralError("");
+            })
+            .catch(function (error) {
+                //setGeneralError("id du compte invalid.");
+                console.log(error)
+                //alert(error);
+            });
 
-        };
+    };
 
 
     return <div className="w-3/4 mx-auto">

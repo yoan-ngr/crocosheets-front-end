@@ -14,6 +14,7 @@ import Home from "./pages/Home.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import {CookiesProvider} from "react-cookie";
+import LoggedRoute from "./components/LoggedRoute.jsx";
 
 const router = createBrowserRouter([
     {
@@ -35,15 +36,15 @@ const router = createBrowserRouter([
             },
             {
                 path: "/dashboard",
-                element: <Dashboard />,
+                element: <LoggedRoute element={<Dashboard />} />,
             },
             {
                 path: "/sheet",
-                element: <Sheet />,
+                element: <LoggedRoute element={<Sheet/>} />,
             },
             {
                 path: "/profile",
-                element: <Profile/>,
+                element: <LoggedRoute element={<Profile/>} />,
             },
         ]
     },
