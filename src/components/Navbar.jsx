@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Link, redirect} from "react-router-dom";
+import {Link, redirect, useNavigate} from "react-router-dom";
 import Logo from "../assets/crocosheets.png";
 import {useCookies} from "react-cookie";
 import axios from "axios";
@@ -9,6 +9,7 @@ function Navbar () {
     const [loggedIn, setLoggedIn] = useState(true);
 
     const [cookies, setCookies] = useCookies(["user"])
+    const navigate = useNavigate();
 
     const handleLogOut = () => {
         setCookies("user", null);
@@ -16,7 +17,8 @@ function Navbar () {
             id : cookies.user.id
         })
         .then(result => {
-            console.log("Déconnecté")
+            //console.log("Déconnecté")
+            navigate('/login')
         }).catch(err => {
             console.log(err)
         });

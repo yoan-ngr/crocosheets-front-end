@@ -14,7 +14,7 @@ import Home from "./pages/Home.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import Profile from "./pages/Profile.jsx";
 import {CookiesProvider} from "react-cookie";
-import LoggedRoute from "./components/LoggedRoute.jsx";
+import LoggedRoute from "./components/utils/LoggedRoute.jsx";
 
 const router = createBrowserRouter([
     {

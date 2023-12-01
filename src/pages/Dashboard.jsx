@@ -5,6 +5,7 @@ import axios from "axios";
 import SheetTableElement from "../components/SheetTableElement.jsx";
 import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
+import {AlertError, AlertSuccess} from "../components/Alert.jsx";
 
 function Dashboard () {
 
@@ -13,8 +14,32 @@ function Dashboard () {
 
     const [cookies, setCookies] = useCookies();
 
-    const handleFileDelete = () => {
+    const [userDocuments, setUserDocuments] = useState([]);
+    const [error, setError] = useState("");
+    const [deleteSuccess, setDeleteSuccess] = useState(false);
 
+    useEffect(() => {
+
+        axios.get('http://localhost:3000/api/sheets/' + cookies.user.id)
+            .then(res => {
+                setUserDocuments(res.data.data);
+            })
+            .catch(err => {
+                setError("Une erreur est survenue lors de la récupération des documents.")
+            });
+    }, []);
+
+    const handleFileDelete = () => {
+        axios.delete('http://localhost:3000/api/sheet/' + currentFileIdToDelete)
+            .then (() => {
+                setDeleteSuccess(true);
+                setError("");
+            })
+            .catch (err => {
+                setError("Une erreur est survenue lors de la suppression du fichier. (" + err.message + ")")
+                setDeleteSuccess(false);
+                //console.log(err)
+            })
     }
 
 
@@ -26,7 +51,7 @@ function Dashboard () {
         })
             .then(function (response) {
                 console.log(response);
-                setCookies("user", response.data);
+                //setCookies("user", response.data);
                 //setGeneralError("");
             })
             .catch(function (error) {
@@ -54,47 +79,48 @@ function Dashboard () {
             </div>
         </div>
 
-        <PageTitle text="Dashboard" />
-        <Link to="/sheet" className="btn btn-outline-primary mb-6" onClick={handleCreateSheet} >Nouveau document</Link>
-        <div className="flex overflow-x-auto">
-            <table className="table-hover table-zebra table">
-                <thead>
-                <tr>
-                    <th className="w-3/5">Nom du fichier</th>
-                    <th>Date de modification</th>
-                    <th>Supprimer</th>
-                </tr>
-                </thead>
-                <tbody>
-                <SheetTableElement
-                    id={0}
-                    name={"Document de test"}
-                    modificationDate={"30/11/2023 13:44"}
-                    setCurrentFileDeleteName={setCurrentFileNameToDelete}
-                    setCurrentFileDeleteId={setCurrentFileIdToDelete}
-                />
-                <tr>
-                    <th>Moyenne semestre</th>
-                    <td>26/10/2023 13:29</td>
-                    <td><button className="btn btn-solid-error "><Trashbin /></button></td>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <td>26/10/2023 13:29</td>
-                    <td><button className="btn btn-solid-error "><Trashbin /></button></td>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <td>26/10/2023 13:29</td>
-                    <td><button className="btn btn-solid-error "><Trashbin /></button></td>
-                </tr>
-                <tr>
-                    <th>3</th>
-                    <td>26/10/2023 13:29</td>
-                    <td><button className="btn btn-solid-error "><Trashbin /></button></td>
-                </tr>
-                </tbody>
-            </table>
+        {
+            error !== "" && <div className="mx-auto max-w-3xl mt-12"><AlertError title="Oups !" details={error}/></div>
+        }
+        {
+            deleteSuccess && <div className="mx-auto max-w-3xl mt-12"><AlertSuccess title="Succès !" details={<span>Le fichier "<span className="font-semibold">{currentFileNameToDelete}</span>" a été supprimé avec succès !</span>}/></div>
+        }
+
+        <div className="mt-12">
+            <PageTitle text="Tableau de bord"/>
+            <div className="flex justify-between mt-12">
+                <p className="text-lg"><span className="font-semibold">Bienvenue</span>, {cookies.user.first_name}</p>
+                <Link to="/sheet" className="btn btn-outline-primary mb-6" onClick={handleCreateSheet}>Nouveau
+                document</Link>
+            </div>
+            <div className="flex overflow-x-auto">
+                <table className="table-hover table-zebra table">
+                    <thead>
+                    <tr>
+                        <th className="w-[4%]">#</th>
+                        <th className="w-3/5">Nom du fichier</th>
+                        <th>Date de modification</th>
+                        <th>Supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        userDocuments.map(document => <SheetTableElement key={document.idSheet}
+                            id={document.idSheet}
+                            name={document.nomDocument}
+                            modificationDate={document.dateDeModification}
+                            setCurrentFileDeleteName={setCurrentFileNameToDelete}
+                            setCurrentFileDeleteId={setCurrentFileIdToDelete}
+                        />)
+                    }
+                    </tbody>
+                </table>
+            </div>
+            {
+                userDocuments.length === 0 && <p className="text-center my-6 text-zinc-500">Il semblerait que vous n'ayez aucun fichier à votre nom.
+                Créez-en un à l'aide du bouton <span className="font-semibold text-blue-500">Nouveau document</span> en
+                haut à droite !</p>
+            }
         </div>
     </div>
 }
