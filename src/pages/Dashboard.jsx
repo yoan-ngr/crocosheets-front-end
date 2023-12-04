@@ -13,6 +13,7 @@ function Dashboard () {
     const [currentFileIdToDelete, setCurrentFileIdToDelete] = useState(-1);
 
     const [cookies, setCookies] = useCookies();
+    const navigate = useNavigate();
 
     const [userDocuments, setUserDocuments] = useState([]);
     const [error, setError] = useState("");
@@ -40,6 +41,11 @@ function Dashboard () {
                 setDeleteSuccess(false);
                 //console.log(err)
             })
+    }
+
+    function openSheet (id) {
+        navigate('/sheet/' + id);
+        return;
     }
 
 
@@ -111,6 +117,7 @@ function Dashboard () {
                             modificationDate={document.dateDeModification}
                             setCurrentFileDeleteName={setCurrentFileNameToDelete}
                             setCurrentFileDeleteId={setCurrentFileIdToDelete}
+                            onOpen={() => openSheet(document.idSheet)}
                         />)
                     }
                     </tbody>

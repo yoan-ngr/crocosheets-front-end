@@ -39,7 +39,7 @@ const router = createBrowserRouter([
                 element: <LoggedRoute element={<Dashboard />} />,
             },
             {
-                path: "/sheet",
+                path: "/sheet/:id",
                 element: <LoggedRoute element={<Sheet/>} />,
             },
             {
