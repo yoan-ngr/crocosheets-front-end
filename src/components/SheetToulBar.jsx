@@ -10,7 +10,7 @@ class SheetToulBar extends Component {
                     <div className="dropdown dropdown-hover">
                         <label className="btn btn-solid-primary my-2" tabIndex="0">Fichier</label>
                         <div className="dropdown-menu dropdown-menu-bottom-right">
-                            <a className="dropdown-item text-sm">Ouvrir</a>
+                            <a className="dropdown-item text-sm"><kbd className="kbd">Ctrl + O</kbd>Ouvrir</a>
                             <a tabIndex="-1" className="dropdown-item text-sm">Sauvegarder</a>
                             <a tabIndex="-1" className="dropdown-item text-sm">Quitter</a>
                         </div>
@@ -24,14 +24,14 @@ class SheetToulBar extends Component {
                         </div>
                     </div>
 
-                    <input className={"input input-solid-success my-2 input-block"} placeholder={"écrivez votre propre titre"}/>
+                    <input className={"input input-ghost-success my-2 input-block"} placeholder={"Nom du document"}/>
                 </div>
 
-                <div className={"w-5/12"}>
-                    <input className={"input input-ghost-secondary input-block my-2"}/>
+                <div className={"w-5/12 px-12"}>
+                    <input className={"input input-ghost-secondary input-block my-2 font-mono"} placeholder="Entrez une formule..."/>
                 </div>
 
-                <div className={"w-3/12"}>
+                <div className={"w-3/12 flex gap-6 my-2 justify-center"}>
                     <button className={"btn btn-secondary"}>Inviter</button>
 
                     <div className="avatar-group">

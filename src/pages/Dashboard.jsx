@@ -93,7 +93,7 @@ function Dashboard () {
             deleteSuccess && <div className="mx-auto max-w-3xl mt-12"><AlertSuccess title="Succès !" details={<span>Le fichier "<span className="font-semibold">{currentFileNameToDelete}</span>" a été supprimé avec succès !</span>}/></div>
         }
 
-        <div className="mt-12">
+        <div className="my-12">
             <PageTitle text="Tableau de bord"/>
             <div className="flex justify-between mt-12">
                 <p className="text-lg"><span className="font-semibold">Bienvenue</span>, {cookies.user.first_name}</p>
