@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SheetToulBar from "../components/SheetToulBar.jsx";
 
 function Sheet() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -119,47 +120,49 @@ function Sheet() {
 
 
     return (
-        <div className="overflow-scroll">
-            <table className="table w-[128rem]">
-                <thead>
-                <tr>
-                    <th className="w-12"></th>
-                    {Array.from({ length: 26 }, (_, index) => (
-                        <th key={index} className="w-12">
-                            {index}
-                        </th>
-                    ))}
-                </tr>
-                </thead>
-                <tbody>
-                {Array.from({ length: 26 }, (_, rowIndex) => (
-                    <tr key={`${rowIndex}`}>
-                        <td className="w-12">{alphabet.charAt(rowIndex)}</td>
-                        {Array.from({ length: 26 }, (_, colIndex) => (
-                            <td
-                                key={`cell-${rowIndex}-${colIndex}`}
-                                id={`cell-${rowIndex}-${colIndex}`}
-                                data-row={rowIndex}
-                                data-col={colIndex}
-                                contentEditable={selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex}
-                                suppressContentEditableWarning={true}
-                                className={`w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black font-mono p-2 ${
-                                    selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex ? 'bg-green-500 bg-opacity-25' : ''
-                                }`}
-                                onClick={() => handleCellClick(rowIndex, colIndex)}
-                                onDoubleClick={handleCellDoubleClick}
-                                onKeyDown={(e) => handleCellKeyDown(e, rowIndex, colIndex)}
-                            >
-                                {selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex
-                                    ? cellData[rowIndex][colIndex].formula
-                                    : cellData[rowIndex][colIndex].value}
-                            </td>
+        <div><SheetToulBar/>
+            <div className="overflow-scroll">
+                <table className="table w-[128rem]">
+                    <thead>
+                    <tr>
+                        <th className="w-12"></th>
+                        {Array.from({length: 26}, (_, index) => (
+                            <th key={index} className="w-12">
+                                {index}
+                            </th>
                         ))}
                     </tr>
-                ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {Array.from({length: 26}, (_, rowIndex) => (
+                        <tr key={`${rowIndex}`}>
+                            <td className="w-12">{alphabet.charAt(rowIndex)}</td>
+                            {Array.from({length: 26}, (_, colIndex) => (
+                                <td
+                                    key={`cell-${rowIndex}-${colIndex}`}
+                                    id={`cell-${rowIndex}-${colIndex}`}
+                                    data-row={rowIndex}
+                                    data-col={colIndex}
+                                    contentEditable={selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex}
+                                    suppressContentEditableWarning={true}
+                                    className={`w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black font-mono p-2 ${
+                                        selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex ? 'bg-green-500 bg-opacity-25' : ''
+                                    }`}
+                                    onClick={() => handleCellClick(rowIndex, colIndex)}
+                                    onDoubleClick={handleCellDoubleClick}
+                                    onKeyDown={(e) => handleCellKeyDown(e, rowIndex, colIndex)}
+                                >
+                                    {selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex
+                                        ? cellData[rowIndex][colIndex].formula
+                                        : cellData[rowIndex][colIndex].value}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
 
+            </div>
         </div>
     );
 }
