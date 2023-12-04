@@ -57,6 +57,7 @@ function Dashboard () {
         })
             .then(function (response) {
                 console.log(response);
+                openSheet(response.data.data.maxSheet)
                 //setCookies("user", response.data);
                 //setGeneralError("");
             })
@@ -96,8 +97,8 @@ function Dashboard () {
             <PageTitle text="Tableau de bord"/>
             <div className="flex justify-between mt-12">
                 <p className="text-lg"><span className="font-semibold">Bienvenue</span>, {cookies.user.first_name}</p>
-                <Link to="/sheet" className="btn btn-outline-primary mb-6" onClick={handleCreateSheet}>Nouveau
-                document</Link>
+                <button className="btn btn-outline-primary mb-6" onClick={handleCreateSheet}>Nouveau
+                document</button>
             </div>
             <div className="flex overflow-x-auto">
                 <table className="table-hover table-zebra table">
