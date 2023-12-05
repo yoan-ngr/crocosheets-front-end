@@ -29,6 +29,12 @@ function Sheet() {
                 setFileName(res.data.data.nomDocument);
                 const socket = io('http://localhost:3000');
                 socket.emit('identification', cookies.user.first_name + " " + cookies.user.last_name)
+                socket.on('user_connected',(id) => {
+                    console.log(id);
+                })
+                socket.on('user_disconnected',(id) => {
+                    console.log("Un utilisateur est partit");
+                })
             }).catch(err => {
                 console.log(err);
             })
