@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from "react-router-dom";
 
 class SheetToulBar extends Component {
     render() {
@@ -8,16 +9,41 @@ class SheetToulBar extends Component {
 
                 <div className={"w-4/12 flex gap-1 px-1"}>
                     <div className="dropdown dropdown-hover">
-                        <label className="btn btn-solid-primary my-2" tabIndex="0">Fichier</label>
+                        <label className="btn my-2" tabIndex="0">Fichier</label>
                         <div className="dropdown-menu dropdown-menu-bottom-right">
-                            <a className="dropdown-item text-sm"><kbd className="kbd">Ctrl + O</kbd>Ouvrir</a>
-                            <a tabIndex="-1" className="dropdown-item text-sm">Sauvegarder</a>
-                            <a tabIndex="-1" className="dropdown-item text-sm">Quitter</a>
+                            <a className="dropdown-item text-sm"><div className="flex justify-between align-middle">
+                                <span>Ouvrir</span>
+                                <span>
+                                    <kbd className={"kbd mr-1 text-xs"}>Ctrl</kbd>
+                                    +
+                                    <kbd className={"kbd ml-1 text-xs"}>O</kbd>
+                                </span></div>
+                            </a>
+                            <a tabIndex="-1" className="dropdown-item text-sm">
+                                <div className="flex justify-between align-middle">
+                                    <span>Sauvegarder</span>
+                                    <span>
+                                        <kbd className={"kbd mr-1 text-xs"}>Ctrl</kbd>
+                                        +
+                                        <kbd className={"kbd ml-1 text-xs"}>S</kbd>
+                                    </span>
+                                </div>
+                            </a>
+                            <Link to={"/dashboard"} tabIndex="-1" className="dropdown-item text-sm">
+                                <div className="flex justify-between align-middle">
+                                    <span>Quitter</span>
+                                    <span>
+                                        <kbd className={"kbd mr-1 text-xs"}>Ctrl</kbd>
+                                        +
+                                        <kbd className={"kbd ml-1 text-xs"}>Q</kbd>
+                                    </span>
+                                </div>
+                            </Link>
                         </div>
                     </div>
 
                     <div className="dropdown dropdown-hover">
-                        <label className="btn btn-solid-primary my-2" tabIndex="0">Editer</label>
+                        <label className="btn my-2" tabIndex="0">Editer</label>
                         <div className="dropdown-menu dropdown-menu-bottom-right">
                             <a className="dropdown-item text-sm">Copier</a>
                             <a tabIndex="-1" className="dropdown-item text-sm">Coller</a>
