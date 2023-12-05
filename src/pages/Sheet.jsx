@@ -16,6 +16,7 @@ function Sheet() {
 
 
     const [fileName, setFileName] = useState("");
+    const [members, setMembers] = useState([]);
     const [cookies, setCookies] = useCookies();
 
     const params = useParams();
@@ -29,11 +30,11 @@ function Sheet() {
                 setFileName(res.data.data.nomDocument);
                 const socket = io('http://localhost:3000');
                 socket.emit('identification', cookies.user.first_name + " " + cookies.user.last_name)
-                socket.on('user_connected',(id) => {
-                    console.log(id);
+                socket.on('user_connected',(userlist) => {
+                    setMembers(userlist)
                 })
-                socket.on('user_disconnected',(id) => {
-                    console.log("Un utilisateur est partit");
+                socket.on('user_disconnected',(userlist) => {
+                    setMembers(userlist)
                 })
             }).catch(err => {
                 console.log(err);
@@ -177,6 +178,7 @@ function Sheet() {
             <SheetToulBar
                 fileName={fileName}
                 setFileName={setFileName}
+                members={members}
             />
             <div className="overflow-scroll">
                 <table className="table w-[128rem]">

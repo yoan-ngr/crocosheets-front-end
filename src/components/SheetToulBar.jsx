@@ -1,7 +1,32 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {Link} from "react-router-dom";
+import Avatar from "./Avatar.jsx";
+import {useCookies} from "react-cookie";
 
 function SheetToulBar(props) {
+
+    const [cookies, setCookies] = useCookies();
+    const maxMembers = 4;
+
+    const displayAvatars = () => {
+
+        let tmp = [];
+        let sup = 0;
+        for (let i = 0; i < props.members.length; i++) {
+            if(i < maxMembers) {
+                tmp.push(props.members[i])
+            }else if(i === maxMembers) {
+                tmp.push("-1");
+                sup++;
+            }else {
+                sup++;
+            }
+        }
+
+        return tmp.map(member => {
+            return member === "-1" ? <Avatar key={-1} count={sup} /> : <Avatar key={member} username={member} />
+        })
+    }
 
     return <div className={"flex justify-between "}>
 
@@ -65,12 +90,9 @@ function SheetToulBar(props) {
             <button className={"btn btn-secondary"}>Inviter</button>
 
             <div className="avatar-group">
-                <div className="avatar">
-                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026024d" alt="avatar"/>
-                </div>
-                <div className="avatar">
-                    <div>+000</div>
-                </div>
+                {
+                    displayAvatars()
+                }
             </div>
         </div>
 
