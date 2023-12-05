@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import User from '../classes/User';
 import SheetToulBar from "../components/SheetToulBar.jsx";
+import axios from "axios";
+import {useParams} from "react-router-dom";
 
 function Sheet() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -10,7 +12,16 @@ function Sheet() {
     const listeUtilisateurs = new Map();
     listeUtilisateurs.set("Bob",new User("Bob",3,4,'yellow'));
 
+    const params = useParams();
 
+    useEffect(() => {
+        axios.get('https://localhost:3000/api/sheet/' + params.id)
+            .then(res => {
+                console.log(res);
+            }).catch(err => {
+            console.log(err);
+        });
+    }, []);
 
     const handleCellClick = (rowIndex, colIndex) => {
         if (selectedCell != null && cell_focus != null) enregistrer_case(selectedCell.row, selectedCell.col);
