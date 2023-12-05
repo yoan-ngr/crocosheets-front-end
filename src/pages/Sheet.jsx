@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import User from '../classes/User';
 import SheetToulBar from "../components/SheetToulBar.jsx";
 
 function Sheet() {
@@ -6,6 +7,10 @@ function Sheet() {
     const [selectedCell, setSelectedCell] = useState(null);
     const [cellData, setCellData] = useState(Array.from({ length: 26 }, () => Array.from({ length: 26 }, () => ({ formula: '', value: '' }))));
     let cell_focus;
+    const listeUtilisateurs = new Map();
+    listeUtilisateurs.set("Bob",new User("Bob",3,4,'yellow'));
+
+
 
     const handleCellClick = (rowIndex, colIndex) => {
         if (selectedCell != null && cell_focus != null) enregistrer_case(selectedCell.row, selectedCell.col);
@@ -29,7 +34,7 @@ function Sheet() {
         if (inputValue.startsWith('=')) {
             updatedCellData[rowIndex][colIndex] = { formula: inputValue, value: evalFormula(inputValue.substring(1)) };
         } else {
-            updatedCellData[rowIndex][colIndex] = { formula: '', value: inputValue };
+            updatedCellData[rowIndex][colIndex] = { formula: inputValue, value: inputValue };
         }
 
         setCellData(updatedCellData);
@@ -119,6 +124,23 @@ function Sheet() {
     }, [selectedCell]);
 
 
+
+    function get_color_case(rowIndex, colIndex) {
+        // Vérifier si la case est celle d'un utilisateur sélectionné
+        if (selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex) {
+            return 'bg-green-500 bg-opacity-25';
+        } else {// Vérifier si la case correspond à celle d'un utilisateur dans la listeUtilisateurs
+            for (const [i, utilisateur] of listeUtilisateurs) {
+                if (utilisateur.coordX === rowIndex && utilisateur.coordY === colIndex) {
+                    return `bg-${utilisateur.color}-500 bg-opacity-25`;
+                }
+            }
+            return '';
+        }
+    }
+
+
+
     return (
         <div><SheetToulBar/>
             <div className="overflow-scroll">
@@ -146,7 +168,7 @@ function Sheet() {
                                     contentEditable={selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex}
                                     suppressContentEditableWarning={true}
                                     className={`w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black font-mono p-2 ${
-                                        selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex ? 'bg-green-500 bg-opacity-25' : ''
+                                        get_color_case(rowIndex,colIndex)
                                     }`}
                                     onClick={() => handleCellClick(rowIndex, colIndex)}
                                     onDoubleClick={handleCellDoubleClick}
@@ -161,7 +183,6 @@ function Sheet() {
                     ))}
                     </tbody>
                 </table>
-
             </div>
         </div>
     );
