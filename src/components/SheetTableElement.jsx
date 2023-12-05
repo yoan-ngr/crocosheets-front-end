@@ -1,5 +1,6 @@
 import Trashbin from "./icons/Trashbin.jsx";
 import {Link} from "react-router-dom";
+import EyeIcon from "./icons/EyeIcon.jsx";
 
 function SheetTableElement (props) {
 
@@ -10,11 +11,18 @@ function SheetTableElement (props) {
         props.setCurrentFileDeleteId(props.id)
     }
 
-    return <tr className="cursor-pointer" onClick={props.onOpen} id={props.id}>
+    return <tr id={props.id}>
         <th>{props.id}</th>
         <th>{props.name}</th>
         <td>{modificationDate.toLocaleString()}</td>
-        <td><label className="btn btn-solid-error" htmlFor="delete-modal" onClick={handleDelete}><Trashbin /></label></td>
+        <td>
+            <span className="tooltip tooltip-bottom" data-tooltip="Ouvrir le document">
+                <label className="btn btn-solid-primary" htmlFor="delete-modal" onClick={props.onOpen}><EyeIcon /></label>
+            </span>
+            <span className="tooltip tooltip-bottom" data-tooltip="Supprimer le document">
+                <label className="btn btn-solid-error ml-3" htmlFor="delete-modal" onClick={handleDelete}><Trashbin /></label>
+            </span>
+        </td>
     </tr>
 }
 

@@ -21,13 +21,7 @@ function Dashboard () {
 
     useEffect(() => {
 
-        axios.get('http://localhost:3000/api/sheets/' + cookies.user.id)
-            .then(res => {
-                setUserDocuments(res.data.data);
-            })
-            .catch(err => {
-                setError("Une erreur est survenue lors de la récupération des documents.")
-            });
+        updateSheets();
     }, []);
 
     const handleFileDelete = () => {
@@ -35,12 +29,23 @@ function Dashboard () {
             .then (() => {
                 setDeleteSuccess(true);
                 setError("");
+                updateSheets();
             })
             .catch (err => {
                 setError("Une erreur est survenue lors de la suppression du fichier. (" + err.message + ")")
                 setDeleteSuccess(false);
                 //console.log(err)
             })
+    }
+
+    function updateSheets () {
+        axios.get('http://localhost:3000/api/sheets/' + cookies.user.id)
+            .then(res => {
+                setUserDocuments(res.data.data);
+            })
+            .catch(err => {
+                setError("Une erreur est survenue lors de la récupération des documents.")
+            });
     }
 
     function openSheet (id) {
@@ -107,7 +112,7 @@ function Dashboard () {
                         <th className="w-[4%]">#</th>
                         <th className="w-3/5">Nom du fichier</th>
                         <th>Date de modification</th>
-                        <th>Supprimer</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
