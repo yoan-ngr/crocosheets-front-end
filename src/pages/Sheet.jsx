@@ -3,6 +3,7 @@ import User from '../classes/User';
 import SheetToulBar from "../components/SheetToulBar.jsx";
 import axios from "axios";
 import {useParams} from "react-router-dom";
+import {io} from "socket.io-client";
 
 function Sheet() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -12,15 +13,21 @@ function Sheet() {
     const listeUtilisateurs = new Map();
     listeUtilisateurs.set("Bob",new User("Bob",3,4,'yellow'));
 
+
     const params = useParams();
 
     useEffect(() => {
-        axios.get('https://localhost:3000/api/sheet/' + params.id)
+
+
+        axios.get('http://localhost:3000/api/sheet/' + params.id)
             .then(res => {
                 console.log(res);
+                const socket = io('http://localhost:3000');
             }).catch(err => {
-            console.log(err);
-        });
+                console.log(err);
+            })
+        ;
+
     }, []);
 
     const handleCellClick = (rowIndex, colIndex) => {
