@@ -4,6 +4,7 @@ import SheetToulBar from "../components/SheetToulBar.jsx";
 import axios from "axios";
 import {useParams} from "react-router-dom";
 import {io} from "socket.io-client";
+import {useCookies} from "react-cookie";
 
 function Sheet() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -14,6 +15,9 @@ function Sheet() {
     listeUtilisateurs.set("Bob",new User("Bob",3,4,'yellow'));
 
 
+    const [fileName, setFileName] = useState("");
+    const [cookies, setCookies] = useCookies();
+
     const params = useParams();
 
     useEffect(() => {
@@ -21,8 +25,10 @@ function Sheet() {
 
         axios.get('http://localhost:3000/api/sheet/' + params.id)
             .then(res => {
-                console.log(res);
+                console.log(res.data.data);
+                setFileName(res.data.data.nomDocument);
                 const socket = io('http://localhost:3000');
+                socket.emit('identification', cookies.user.first_name + " " + cookies.user.last_name)
             }).catch(err => {
                 console.log(err);
             })
@@ -161,7 +167,11 @@ function Sheet() {
 
 
     return (
-        <div><SheetToulBar/>
+        <div>
+            <SheetToulBar
+                fileName={fileName}
+                setFileName={setFileName}
+            />
             <div className="overflow-scroll">
                 <table className="table w-[128rem]">
                     <thead>
