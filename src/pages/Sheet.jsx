@@ -48,6 +48,8 @@ function Sheet() {
         if (references) {
             references.forEach((ref) => {
                 const [refCol, refRow] = parseReference(ref);
+                console.log(ref)
+                console.log( [refCol, refRow])
                 const refValue = cellData[refRow][refCol].value;
                 formula = formula.replace(ref, refValue);
             });
@@ -138,7 +140,6 @@ function Sheet() {
             return '';
         }
     }
-
 
 
     return (
