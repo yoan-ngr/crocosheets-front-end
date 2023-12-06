@@ -23,12 +23,13 @@ function Sheet() {
 
     const params = useParams();
 
+
     useEffect(() => {
 
 
         axios.get('http://localhost:3000/api/sheet/' + params.id)
             .then(res => {
-                console.log(res.data.data);
+                //console.log(res.data.data);
                 setFileName(res.data.data.nomDocument);
                 let localSocket = io('http://localhost:3000');
                 localSocket.emit('identification', cookies.user)
@@ -40,14 +41,10 @@ function Sheet() {
                 })
                 localSocket.on('selected_cell', (users) => {
 
-                    console.log(users)
-                    return;
-
                     let tmp = new Map();
-                    users.forEach((values, keys) => {
-                        console.log(values, keys)
-                        tmp.set(keys, new User(values.username, values.x, values.y))
-                    })
+                    for (let i = 0; i < users.length; i++) {
+                        tmp.set(users[i].id, new User(users[i].infos.username, users[i].infos.x, users[i].infos.y, users[i].infos.color))
+                    }
                     setListeUtilisateurs(tmp)
                 })
                 setSocket(localSocket);
@@ -182,7 +179,7 @@ function Sheet() {
         } else {// Vérifier si la case correspond à celle d'un utilisateur dans la listeUtilisateurs
             for (const [i, utilisateur] of listeUtilisateurs) {
                 if (utilisateur.coordX === rowIndex && utilisateur.coordY === colIndex) {
-                    return `bg-${utilisateur.color}-500 bg-opacity-25`;
+                    return `bg-${utilisateur.color}-8 bg-opacity-25`;
                 }
             }
             return '';
@@ -197,6 +194,7 @@ function Sheet() {
                 setFileName={setFileName}
                 members={members}
             />
+            <div className="bg-red-8 bg-green-8 bg-blue-8 bg-yellow-8 bg-pink-8 bg-purple-8"></div>
             <div className="overflow-scroll">
                 <table className="table w-[128rem]">
                     <thead>
@@ -221,9 +219,7 @@ function Sheet() {
                                     data-col={colIndex}
                                     contentEditable={selectedCell && selectedCell.row === rowIndex && selectedCell.col === colIndex}
                                     suppressContentEditableWarning={true}
-                                    className={`w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black font-mono p-2 ${
-                                        get_color_case(rowIndex,colIndex)
-                                    }`}
+                                    className={'w-48 max-w-[6rem] overflow-x-hidden border-solid border border-black font-mono p-2 ' + get_color_case(rowIndex,colIndex)}
                                     onClick={() => handleCellClick(rowIndex, colIndex)}
                                     onDoubleClick={handleCellDoubleClick}
                                     onKeyDown={(e) => handleCellKeyDown(e, rowIndex, colIndex)}

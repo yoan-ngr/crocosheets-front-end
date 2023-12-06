@@ -16,7 +16,7 @@ function Avatar (props) {
     }, []);
 
     return <span className="tooltip tooltip-bottom" data-tooltip={props.count ? "et " + props.count + " autres membres" : props.username}>
-        <div className="avatar truncate">
+        <div className={"avatar truncate" + (props.color ? ' bg-' + props.color + '-8' : '')}>
             <div>{props.count ? "+ " + props.count + "..." : initials}</div>
         </div>
     </span>

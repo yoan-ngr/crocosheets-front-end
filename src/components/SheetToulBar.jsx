@@ -14,7 +14,7 @@ function SheetToulBar(props) {
         let sup = 0;
         for (let i = 0; i < props.members.length; i++) {
             if(i < maxMembers) {
-                tmp.push(props.members[i].infos.username)
+                tmp.push({username : props.members[i].infos.username, color : props.members[i].infos.color})
             }else if(i === maxMembers) {
                 tmp.push("-1");
                 sup++;
@@ -24,7 +24,7 @@ function SheetToulBar(props) {
         }
 
         return tmp.map(member => {
-            return member === "-1" ? <Avatar key={-1} count={sup} /> : <Avatar key={member} username={member} />
+            return member.username === "-1" ? <Avatar key={-1} count={sup} /> : <Avatar key={member.username} username={member.username} color={member.color} />
         })
     }
 
