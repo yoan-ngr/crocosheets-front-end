@@ -11,13 +11,15 @@ function Sheet() {
     const [selectedCell, setSelectedCell] = useState(null);
     const [cellData, setCellData] = useState(Array.from({ length: 26 }, () => Array.from({ length: 26 }, () => ({ formula: '', value: '' }))));
     let cell_focus;
-    const listeUtilisateurs = new Map();
-    listeUtilisateurs.set("Bob",new User("Bob",3,4,'yellow'));
+    const [listeUtilisateurs, setListeUtilisateurs] = useState(new Map());
+    //listeUtilisateurs.set("Bob",new User("Bob",3,4,'green'));
 
 
     const [fileName, setFileName] = useState("");
     const [members, setMembers] = useState([]);
     const [cookies, setCookies] = useCookies();
+
+    const [socket, setSocket] = useState(null);
 
     const params = useParams();
 
@@ -28,14 +30,27 @@ function Sheet() {
             .then(res => {
                 console.log(res.data.data);
                 setFileName(res.data.data.nomDocument);
-                const socket = io('http://localhost:3000');
-                socket.emit('identification', cookies.user.first_name + " " + cookies.user.last_name)
-                socket.on('user_connected',(userlist) => {
-                    setMembers(userlist)
+                let localSocket = io('http://localhost:3000');
+                localSocket.emit('identification', cookies.user)
+                localSocket.on('user_connected',(users) => {
+                    setMembers(users)
                 })
-                socket.on('user_disconnected',(userlist) => {
-                    setMembers(userlist)
+                localSocket.on('user_disconnected',(users) => {
+                    setMembers(users)
                 })
+                localSocket.on('selected_cell', (users) => {
+
+                    console.log(users)
+                    return;
+
+                    let tmp = new Map();
+                    users.forEach((values, keys) => {
+                        console.log(values, keys)
+                        tmp.set(keys, new User(values.username, values.x, values.y))
+                    })
+                    setListeUtilisateurs(tmp)
+                })
+                setSocket(localSocket);
             }).catch(err => {
                 console.log(err);
             })
@@ -107,7 +122,9 @@ function Sheet() {
 
     function changer_de_case(rowIndex, colIndex) {
         if (rowIndex >= 0 && rowIndex <= 25 && colIndex >= 0 && colIndex <= 25) {
-            setSelectedCell({ row: rowIndex, col: colIndex });
+            //setSelectedCell({ row: rowIndex, col: colIndex });
+            if(socket != null)
+                socket.emit('select_cell', cookies.user.id, rowIndex, colIndex);
         }
     }
 

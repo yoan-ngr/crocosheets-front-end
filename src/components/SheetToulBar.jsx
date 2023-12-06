@@ -14,7 +14,7 @@ function SheetToulBar(props) {
         let sup = 0;
         for (let i = 0; i < props.members.length; i++) {
             if(i < maxMembers) {
-                tmp.push(props.members[i])
+                tmp.push(props.members[i].infos.username)
             }else if(i === maxMembers) {
                 tmp.push("-1");
                 sup++;
