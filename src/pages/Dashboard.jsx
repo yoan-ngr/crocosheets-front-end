@@ -105,7 +105,7 @@ function Dashboard () {
                 <button className="btn btn-outline-primary mb-6" onClick={handleCreateSheet}>Nouveau
                 document</button>
             </div>
-            <div className="flex overflow-x-auto">
+            <div className="flex">
                 <table className="table-hover table-zebra table">
                     <thead>
                     <tr>
