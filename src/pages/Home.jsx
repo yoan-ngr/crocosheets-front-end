@@ -9,11 +9,27 @@ function Home () {
             <h1 className="text-7xl font-bold text-center">CrocoSheets</h1>
             <h2 className="text-center text-xl text-content2 mt-3">Gérez vos feuilles de calcul simplement et efficacement, en direct avec vos collaborateurs !</h2>
         </div>
-        <div>
-            1 : c'est simple
+        <div className="flex">
+            <div className="w-5/12">
+                <div className="my-16">
+                    <p className="text-center text-3xl font-semibold">Une application simple</p>
+                    <p className="text-justify mx-8 mt-3"><span className="font-semibold">CrocoSheets</span> a un
+                        fonctionnement simple, à la portée de tous. Son interface claire et ergonomique vous permettra
+                        de gérer aisément toutes vos feuilles de calcul, sans prise de tête !</p>
+                </div>
+            </div>
+            <div className="w-7/12 "><img className="h-64 w-full object-none" src="https://storage.googleapis.com/pod_public/1300/167870.jpg" /> </div>
         </div>
-        <div>
-            2 : c'est en live
+        <div className="flex">
+            <div className="w-7/12 ">
+                <img className="h-64 w-full object-none" src="https://storage.googleapis.com/pod_public/1300/167870.jpg" />
+            </div>
+            <div className="w-5/12">
+                <div className="my-16">
+                    <p className="text-center text-3xl font-semibold">Travaillez à plusieurs</p>
+                    <p className="text-justify mx-8 mt-3">Profitez des fonctionnalités de CrocoSheets pour travailler à plusieurs sur le même document, en temps réel ! Efefctuez vos modifications et voyez celles-ci immédiatement reportées sur l'ordinateur de vos collaborateurs !</p>
+                </div>
+            </div>
         </div>
         <div className="bg-gray-6 py-16">
             <h2 className="text-5xl font-semibold text-center">Prêt(e) à démarrer?</h2>
