@@ -35,17 +35,15 @@ function Sheet() {
                 localSocket.emit('identification', cookies.user)
                 localSocket.on('user_connected',(users) => {
                     setMembers(users)
+                    updateUserList(users)
                 })
                 localSocket.on('user_disconnected',(users) => {
                     setMembers(users)
+                    updateUserList(users)
                 })
                 localSocket.on('selected_cell', (users) => {
+                    updateUserList(users)
 
-                    let tmp = new Map();
-                    for (let i = 0; i < users.length; i++) {
-                        tmp.set(users[i].id, new User(users[i].infos.username, users[i].infos.x, users[i].infos.y, users[i].infos.color))
-                    }
-                    setListeUtilisateurs(tmp)
                 })
                 setSocket(localSocket);
             }).catch(err => {
@@ -54,6 +52,14 @@ function Sheet() {
         ;
 
     }, []);
+
+    function updateUserList (users) {
+        let tmp = new Map();
+        for (let i = 0; i < users.length; i++) {
+            tmp.set(users[i].id, new User(users[i].infos.username, users[i].infos.x, users[i].infos.y, users[i].infos.color))
+        }
+        setListeUtilisateurs(tmp)
+    }
 
     const handleCellClick = (rowIndex, colIndex) => {
         if (selectedCell != null && cell_focus != null) enregistrer_case(selectedCell.row, selectedCell.col);
