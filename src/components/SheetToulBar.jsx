@@ -79,6 +79,8 @@ function SheetToulBar(props) {
                 placeholder={"Nom du document"}
                 value={props.fileName}
                 onChange={(e) => props.setFileName(e.target.value)}
+                onBlur={(e) => props.modify(e.target.value)}
+                onKeyDown={(e) => props.enter(e)}
             />
         </div>
 

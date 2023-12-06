@@ -140,6 +140,12 @@ function Sheet() {
         }
     };
 
+    const handleNameKeyDown = (e) => {
+        if (e.key === 'Enter'){
+            e.target.blur();
+        }
+    }
+
     useEffect(() => {
         const handleGlobalKeyDown = (e) => {
             if (e.key === 'Enter' && selectedCell) {
@@ -192,6 +198,19 @@ function Sheet() {
         }
     }
 
+    function modify_filename(name){
+        axios.patch('http://localhost:3000/api/sheet/' + params.id, {
+            "newName" : name
+        })
+            .then(() => {
+
+            })
+            .catch((e) => {
+                console.log(e)
+            });
+
+    }
+
 
     return (
         <div>
@@ -199,6 +218,8 @@ function Sheet() {
                 fileName={fileName}
                 setFileName={setFileName}
                 members={members}
+                modify={modify_filename}
+                enter={handleNameKeyDown}
             />
             <div className="bg-red-8 bg-green-8 bg-blue-8 bg-yellow-8 bg-pink-8 bg-purple-8"></div>
             <div className="overflow-scroll">
