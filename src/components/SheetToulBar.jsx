@@ -44,7 +44,7 @@ function SheetToulBar(props) {
                                     <kbd className={"kbd ml-1 text-xs"}>O</kbd>
                                 </span></div>
                     </a>
-                    <a tabIndex="-1" className="dropdown-item text-sm">
+                    <a tabIndex="-1" className="dropdown-item text-sm" onClick={() => props.save()}>
                         <div className="flex justify-between align-middle">
                             <span>Sauvegarder</span>
                             <span>

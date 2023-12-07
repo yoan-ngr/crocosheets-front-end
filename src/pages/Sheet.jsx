@@ -116,6 +116,10 @@ function Sheet() {
         setListeUtilisateurs(tmp)
     }
 
+    function save () {
+        socket.emit('save', params.id)
+    }
+
     const handleCellClick = (rowIndex, colIndex) => {
         if (selectedCell != null && cell_focus != null) enregistrer_case(selectedCell.row, selectedCell.col);
         changer_de_case(rowIndex, colIndex);
@@ -291,6 +295,7 @@ function Sheet() {
                 isOwner={isOwner}
                 selCellFormula={selectedCellFormula}
                 onEditFormula={handleEditFormula}
+                save={save}
             />
 
             <div className="bg-red-8 bg-green-8 bg-blue-8 bg-yellow-8 bg-pink-8 bg-purple-8"></div>
