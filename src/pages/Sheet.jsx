@@ -191,7 +191,7 @@ function Sheet() {
         console.log("Le serveur doit mettre à jour la case (" + rowIndex + " ; " + colIndex + ") avec la formule : " + cellData[rowIndex][colIndex].formula);
         console.log("Nouvelle valeur : " + cellData[rowIndex][colIndex].value);
 
-        socket?.emit('modify_cell', rowIndex, colIndex, cellData[rowIndex][colIndex].formula);
+        socket?.emit('modify_cell', rowIndex, colIndex, cellData[rowIndex][colIndex].formula,params.id);
     }
 
     function changer_de_case(rowIndex, colIndex) {
