@@ -56,18 +56,19 @@ function Sheet() {
                     }
                 }
 
-                let tmp = [];
+
+                const updatedCellData = [...cellData];
                 for (let i = 0; i < content.length; i++) {
-                    tmp.push([]);
                     for (let j = 0; j < content[i].length; j++) {
                         if (content[i][j].startsWith('=')) {
-                            tmp[i].push({ formula: content[i][j], value: evalFormula(content[i][j].substring(1)) });
+                            updatedCellData[i][j] = { formula: content[i][j], value: evalFormula(content[i][j].substring(1)) };
                         } else {
-                            tmp[i].push({ formula: content[i][j], value: content[i][j] });
+                            updatedCellData[i][j] ={ formula: content[i][j], value: content[i][j] };
                         }
                     }
                 }
-                setCellData(tmp)
+                setCellData(updatedCellData);
+
 
                 let localSocket = io('http://localhost:3000');
                 localSocket.emit('identification', cookies.user, params.id)
@@ -86,9 +87,18 @@ function Sheet() {
                     updateUserList(users)
                 })
                 localSocket.on('modified_cell', (x, y, val) => {
-                    const tmp2 = cellData.slice();
-                    tmp2[x][y].formula = val;
-                    setCellData(tmp2);
+                    const updatedCellData = [...cellData];
+                    const inputValue = val;
+
+                    if (inputValue.startsWith('=')) {
+                        updatedCellData[x][y] = { formula: inputValue, value: evalFormula(inputValue.substring(1)) };
+                    } else {
+                        updatedCellData[x][y] = { formula: inputValue, value: inputValue };
+                    }
+
+                    setCellData(updatedCellData);
+
+
                 })
                 setSocket(localSocket);
             }).catch(err => {
