@@ -86,9 +86,10 @@ function Sheet() {
                     updateUserList(users)
                 })
                 localSocket.on('modified_cell', (x, y, val) => {
+                    console.log(cellData)
                     const tmp2 = cellData.slice();
                     tmp2[x][y].formula = val;
-                    setCellData(tmp2);
+                    //setCellData(tmp2);
                 })
                 setSocket(localSocket);
             }).catch(err => {

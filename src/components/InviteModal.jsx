@@ -7,7 +7,9 @@ import {useParams} from "react-router-dom";
 function InviteModal () {
 
     const [members, setMembers] = useState([]);
+    const [notMembers, setNotMembers] = useState([]);
     const [suggestions, setSuggestions] = useState([]);
+    const [search, setSearch] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -15,7 +17,12 @@ function InviteModal () {
 
     useEffect(() => {
         refreshMemberList()
+        refreshNotMemberList()
     }, []);
+
+    useEffect(() => {
+        refreshSuggestions()
+    }, [notMembers]);
 
     function refreshMemberList () {
         axios.get('http://localhost:3000/api/sheet/' + params.id + '/members')
@@ -31,12 +38,37 @@ function InviteModal () {
             });
     }
 
+    function refreshNotMemberList () {
+        axios.get('http://localhost:3000/api/sheet/' + params.id + '/notmembers')
+            .then(res => {
+                setError("")
+                setNotMembers(res.data.data)
+            })
+            .catch(err => {
+                console.log(err)
+                setSuccess("")
+                setError("Une erreur est survenue lors de la récupération des membres. Veuillez réessayer.")
+            });
+    }
+
+    function refreshSuggestions () {
+        let tmp = [];
+        if(search.length >= 2){
+            for (let i = 0; i < notMembers.length; i++) {
+                if(notMembers[i].first_name.toLowerCase().includes(search.toLowerCase()))
+                    tmp.push(notMembers[i])
+            }
+        }
+        setSuggestions(tmp)
+    }
+
     function addMember (id) {
-        axios.post('')
+        axios.post('http://localhost:3000/api/sheet/adduser/' + params.id, {idUser : id})
             .then(() => {
                 setSuccess("Membre ajouté avec succès !")
                 setError("")
                 refreshMemberList()
+                refreshNotMemberList()
             })
             .catch(err => {
                 console.log(err)
@@ -51,6 +83,7 @@ function InviteModal () {
                 setSuccess("Membre supprimé avec succès !")
                 setError("")
                 refreshMemberList()
+                refreshNotMemberList()
             })
             .catch(err => {
                 console.log(err)
@@ -60,7 +93,8 @@ function InviteModal () {
     }
 
     const handleSearchType = (e) => {
-
+        setSearch(e.target.value)
+        refreshSuggestions()
     }
 
     return <>
@@ -78,18 +112,25 @@ function InviteModal () {
                     success !== "" && <AlertSuccess title="Succès !" details={success} />
                 }
                 <p className="mb-2 mt-2">Rechercher un utilisateur</p>
-                <div className="flex gap-2">
-                    <div className="w-full dropdown ">
+
+                    <div className="w-full dropdown">
                         <input className="input input-block input-ghost-secondary"
-                               placeholder="Adresse e-mail ou nom..."/>
+                               placeholder="Adresse e-mail ou nom..."
+                               value={search}
+                               onChange={handleSearchType}
+                        />
                         <div className="dropdown-menu w-full">
-                            <a className="dropdown-item text-sm">Profile</a>
-                            <a className="dropdown-item text-sm">Account settings</a>
-                            <a className="dropdown-item text-sm">Subscriptions</a>
+                            {
+                                suggestions.map(suggestion => {
+                                    return <a key={suggestion.id} onClick={() => addMember(suggestion.id)} className="dropdown-item text-sm">
+                                        <div className="flex">
+                                            <span>{suggestion.first_name + " " + suggestion.last_name.toUpperCase()}</span>
+                                            <span className="ml-1 text-content3">({suggestion.email})</span>
+                                        </div></a>
+                                })
+                            }
                         </div>
                     </div>
-                    <button className="btn btn-success">Ajouter</button>
-                </div>
             </div>
             <div>
                 <p className="mb-3">Membre(s) actuel(s)</p>
