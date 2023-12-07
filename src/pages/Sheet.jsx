@@ -114,8 +114,14 @@ function Sheet() {
         cell_focus = e.target;
     };
 
-    const handleEditFormula = () => {
-
+    const handleEditFormula = (e) => {
+        /*setSelectedCellFormula(e.target.value)
+        console.log(e)
+        return;
+        let tmp = [...cellData];
+        tmp[selectedCell.row][selectedCell.col].formula = selectedCellFormula;
+        setCellData(tmp);
+        enregistrer_case(selectedCell.row, selectedCell.col)*/
     }
 
     function enregistrer_case(rowIndex, colIndex) {
