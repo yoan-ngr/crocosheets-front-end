@@ -199,7 +199,7 @@ function Sheet() {
             setSelectedCell({ row: rowIndex, col: colIndex });
             setSelectedCellFormula(cellData[rowIndex][colIndex].formula)
             if(socket != null)
-                socket.emit('select_cell', cookies.user.id, rowIndex, colIndex);
+                socket.emit('select_cell', cookies.user.id, rowIndex, colIndex,params.id);
         }
     }
 
