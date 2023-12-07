@@ -81,7 +81,14 @@ function Sheet() {
                 })
                 localSocket.on('selected_cell', (users) => {
                     updateUserList(users)
-
+                })
+                localSocket.on('selected_cell', (users) => {
+                    updateUserList(users)
+                })
+                localSocket.on('modified_cell', (x, y, val) => {
+                    const tmp2 = cellData.slice();
+                    tmp2[x][y].formula = val;
+                    setCellData(tmp2);
                 })
                 setSocket(localSocket);
             }).catch(err => {
@@ -169,6 +176,8 @@ function Sheet() {
     function serveur_modifier_case(rowIndex, colIndex) {
         console.log("Le serveur doit mettre à jour la case (" + rowIndex + " ; " + colIndex + ") avec la formule : " + cellData[rowIndex][colIndex].formula);
         console.log("Nouvelle valeur : " + cellData[rowIndex][colIndex].value);
+
+        socket?.emit('modify_cell', rowIndex, colIndex, cellData[rowIndex][colIndex].formula);
     }
 
     function changer_de_case(rowIndex, colIndex) {
