@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import User from '../classes/User';
 import SheetToulBar from "../components/SheetToulBar.jsx";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {io} from "socket.io-client";
 import {useCookies} from "react-cookie";
+import InviteModal from "../components/InviteModal.jsx";
 
 function Sheet() {
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -22,15 +23,25 @@ function Sheet() {
     const [socket, setSocket] = useState(null);
 
     const params = useParams();
+    const navigate = useNavigate();
+    const [isOwner, setIsOwner] = useState(false);
 
 
     useEffect(() => {
 
+        axios.post('http://localhost:3000/api/sheet/checkuser/' + params.id, {
+            idUser : cookies.user.id
+        })
+            .catch(err => {
+                console.log(err)
+                navigate('/dashboard', {state: {errId : 2}})
+            });
 
         axios.get('http://localhost:3000/api/sheet/' + params.id)
             .then(res => {
-                //console.log(res.data.data);
+                //console.log(res.data.data.proprietaire);
                 setFileName(res.data.data.nomDocument);
+                setIsOwner(res.data.data.proprietaire === cookies.user.id)
                 let localSocket = io('http://localhost:3000');
                 localSocket.emit('identification', cookies.user)
                 localSocket.on('user_connected',(users) => {
@@ -220,7 +231,9 @@ function Sheet() {
                 members={members}
                 modify={modify_filename}
                 enter={handleNameKeyDown}
+                isOwner={isOwner}
             />
+
             <div className="bg-red-8 bg-green-8 bg-blue-8 bg-yellow-8 bg-pink-8 bg-purple-8"></div>
             <div className="overflow-scroll">
                 <table className="table w-[128rem]">

@@ -2,6 +2,7 @@ import React, {Component, useState} from 'react';
 import {Link} from "react-router-dom";
 import Avatar from "./Avatar.jsx";
 import {useCookies} from "react-cookie";
+import InviteModal from "./InviteModal.jsx";
 
 function SheetToulBar(props) {
 
@@ -89,7 +90,11 @@ function SheetToulBar(props) {
         </div>
 
         <div className={"w-3/12 flex gap-6 my-2 justify-center"}>
-            <button className={"btn btn-secondary"}>Inviter</button>
+            {
+                props.isOwner && <><label className="btn btn-secondary" htmlFor="modal-1">Inviter</label>
+                <InviteModal /></>
+            }
+
 
             <div className="avatar-group">
                 {

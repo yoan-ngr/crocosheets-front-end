@@ -1,9 +1,9 @@
 import PageTitle from "../components/PageTitle.jsx";
 import Trashbin from "../components/icons/Trashbin.jsx";
-import {Link, redirect, useNavigate} from "react-router-dom";
+import {Link, redirect, useLocation, useNavigate} from "react-router-dom";
 import axios from "axios";
 import SheetTableElement from "../components/SheetTableElement.jsx";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 import {AlertError, AlertSuccess} from "../components/Alert.jsx";
 
@@ -14,6 +14,7 @@ function Dashboard () {
 
     const [cookies, setCookies] = useCookies();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [userDocuments, setUserDocuments] = useState([]);
     const [error, setError] = useState("");
@@ -96,6 +97,15 @@ function Dashboard () {
         }
         {
             deleteSuccess && <div className="mx-auto max-w-3xl mt-12"><AlertSuccess title="Succès !" details={<span>Le fichier "<span className="font-semibold">{currentFileNameToDelete}</span>" a été supprimé avec succès !</span>}/></div>
+        }
+
+        {
+            location.state?.errId === 2 && <div className="mb-6 max-w-xl mx-auto">
+                <AlertError
+                    title="Erreur !"
+                    details="Vous n'avez pas accès à cette feuille de calcul."
+                />
+            </div>
         }
 
         <div className="my-12">
