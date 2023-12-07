@@ -86,7 +86,7 @@ function SheetToulBar(props) {
         </div>
 
         <div className={"w-5/12 px-12"}>
-            <input className={"input input-ghost-secondary input-block my-2 font-mono"} placeholder="Entrez une formule..."/>
+            <input className={"input input-ghost-secondary input-block my-2 font-mono"} value={props.selCellFormula} onChange={props.onEditFormula} placeholder="Entrez une formule..."/>
         </div>
 
         <div className={"w-3/12 flex gap-6 my-2 justify-center"}>

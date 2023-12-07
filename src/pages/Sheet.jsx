@@ -19,6 +19,7 @@ function Sheet() {
     const [fileName, setFileName] = useState("");
     const [members, setMembers] = useState([]);
     const [cookies, setCookies] = useCookies();
+    const [selectedCellFormula, setSelectedCellFormula] = useState("");
 
     const [socket, setSocket] = useState(null);
 
@@ -39,11 +40,37 @@ function Sheet() {
 
         axios.get('http://localhost:3000/api/sheet/' + params.id)
             .then(res => {
-                //console.log(res.data.data.proprietaire);
+                //console.log(res.data.data.contenu);
                 setFileName(res.data.data.nomDocument);
                 setIsOwner(res.data.data.proprietaire === cookies.user.id)
+
+                let content = [];
+                const lines = res.data.data.contenu.split('\n');
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+
+                    if (line) {
+                        const values = line.split(';');
+                        content.push(values);
+                    }
+                }
+
+                let tmp = [];
+                for (let i = 0; i < content.length; i++) {
+                    tmp.push([]);
+                    for (let j = 0; j < content[i].length; j++) {
+                        if (content[i][j].startsWith('=')) {
+                            tmp[i].push({ formula: content[i][j], value: evalFormula(content[i][j].substring(1)) });
+                        } else {
+                            tmp[i].push({ formula: content[i][j], value: content[i][j] });
+                        }
+                    }
+                }
+                setCellData(tmp)
+
                 let localSocket = io('http://localhost:3000');
-                localSocket.emit('identification', cookies.user)
+                localSocket.emit('identification', cookies.user, params.id)
                 localSocket.on('user_connected',(users) => {
                     setMembers(users)
                     updateUserList(users)
@@ -86,6 +113,10 @@ function Sheet() {
         e.target.focus();
         cell_focus = e.target;
     };
+
+    const handleEditFormula = () => {
+
+    }
 
     function enregistrer_case(rowIndex, colIndex) {
         const updatedCellData = [...cellData];
@@ -136,7 +167,8 @@ function Sheet() {
 
     function changer_de_case(rowIndex, colIndex) {
         if (rowIndex >= 0 && rowIndex <= 25 && colIndex >= 0 && colIndex <= 25) {
-            //setSelectedCell({ row: rowIndex, col: colIndex });
+            setSelectedCell({ row: rowIndex, col: colIndex });
+            setSelectedCellFormula(cellData[rowIndex][colIndex].formula)
             if(socket != null)
                 socket.emit('select_cell', cookies.user.id, rowIndex, colIndex);
         }
@@ -232,6 +264,8 @@ function Sheet() {
                 modify={modify_filename}
                 enter={handleNameKeyDown}
                 isOwner={isOwner}
+                selCellFormula={selectedCellFormula}
+                onEditFormula={handleEditFormula}
             />
 
             <div className="bg-red-8 bg-green-8 bg-blue-8 bg-yellow-8 bg-pink-8 bg-purple-8"></div>
