@@ -55,7 +55,9 @@ function InviteModal () {
         let tmp = [];
         if(search.length >= 2){
             for (let i = 0; i < notMembers.length; i++) {
-                if(notMembers[i].first_name.toLowerCase().includes(search.toLowerCase()))
+                if(notMembers[i].first_name.toLowerCase().includes(search.toLowerCase()) ||
+                    notMembers[i].last_name.toLowerCase().includes(search.toLowerCase()) ||
+                    notMembers[i].email.toLowerCase().includes(search.toLowerCase()))
                     tmp.push(notMembers[i])
             }
         }
@@ -98,20 +100,20 @@ function InviteModal () {
     }
 
     return <>
-    <input className="modal-state" id="modal-1" type="checkbox" />
-    <div className="modal">
-        <label className="modal-overlay" htmlFor="modal-1"></label>
-        <div className="modal-content flex flex-col gap-5 w-[32rem]">
-            <label htmlFor="modal-1" className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
-            <h2 className="text-xl">Inviter des collaborateurs</h2>
-            <div>
-                {
-                    error !== "" && <AlertError title="Oups !" details={error}/>
-                }
-                {
-                    success !== "" && <AlertSuccess title="Succès !" details={success} />
-                }
-                <p className="mb-2 mt-2">Rechercher un utilisateur</p>
+        <input className="modal-state" id="modal-1" type="checkbox" />
+        <div className="modal">
+            <label className="modal-overlay" htmlFor="modal-1"></label>
+            <div className="modal-content flex flex-col gap-5 w-[32rem]">
+                <label htmlFor="modal-1" className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</label>
+                <h2 className="text-xl">Inviter des collaborateurs</h2>
+                <div>
+                    {
+                        error !== "" && <AlertError title="Oups !" details={error}/>
+                    }
+                    {
+                        success !== "" && <AlertSuccess title="Succès !" details={success} />
+                    }
+                    <p className="mb-2 mt-2">Rechercher un utilisateur</p>
 
                     <div className="w-full dropdown">
                         <input className="input input-block input-ghost-secondary"
@@ -131,36 +133,36 @@ function InviteModal () {
                             }
                         </div>
                     </div>
-            </div>
-            <div>
-                <p className="mb-3">Membre(s) actuel(s)</p>
-                {
-                    members.length === 0 ? <p className="text-content3 text-sm">Vous n'avez invité aucun collaborateur pour le moment. Utilisez le
-                            champ ci-dessus pour ajouter des membres !</p>
-                        : <div className="flex flex-col gap-1.5">
-                            {
-                                members.map(member => {
-                                    return <div key={member.id} className="flex justify-between">
-                                        <div className="flex gap-2">
-                                            <Avatar username={member.first_name + " " + member.last_name}/>
-                                            <div className="text-sm">
-                                                <p className="font-semibold">{member.first_name + " " + member.last_name}</p>
-                                                <p className="text-content3">{member.email}</p>
+                </div>
+                <div>
+                    <p className="mb-3">Membre(s) actuel(s)</p>
+                    {
+                        members.length === 0 ? <p className="text-content3 text-sm">Vous n'avez invité aucun collaborateur pour le moment. Utilisez le
+                                champ ci-dessus pour ajouter des membres !</p>
+                            : <div className="flex flex-col gap-1.5">
+                                {
+                                    members.map(member => {
+                                        return <div key={member.id} className="flex justify-between">
+                                            <div className="flex gap-2">
+                                                <Avatar username={member.first_name + " " + member.last_name}/>
+                                                <div className="text-sm">
+                                                    <p className="font-semibold">{member.first_name + " " + member.last_name}</p>
+                                                    <p className="text-content3">{member.email}</p>
+                                                </div>
                                             </div>
+                                            <button className="btn btn-outline-error btn-sm my-auto" onClick={() => deleteMember(member.id)}>Retirer</button>
                                         </div>
-                                        <button className="btn btn-outline-error btn-sm my-auto" onClick={() => deleteMember(member.id)}>Retirer</button>
-                                    </div>
-                                })
-                            }
-                        </div>
-                }
-            </div>
+                                    })
+                                }
+                            </div>
+                    }
+                </div>
 
-            <div className="flex gap-3">
-                <label htmlFor="modal-1" className="btn w-48 mx-auto">Terminé</label>
+                <div className="flex gap-3">
+                    <label htmlFor="modal-1" className="btn w-48 mx-auto">Terminé</label>
+                </div>
             </div>
         </div>
-    </div>
     </>
 }
 
