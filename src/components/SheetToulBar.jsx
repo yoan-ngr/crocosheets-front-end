@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Avatar from "./Avatar.jsx";
 import {useCookies} from "react-cookie";
 import InviteModal from "./InviteModal.jsx";
@@ -8,6 +8,8 @@ function SheetToulBar(props) {
 
     const [cookies, setCookies] = useCookies();
     const maxMembers = 4;
+
+    const navigate = useNavigate();
 
     const displayAvatars = () => {
 
@@ -27,6 +29,12 @@ function SheetToulBar(props) {
         return tmp.map(member => {
             return member.username === "-1" ? <Avatar key={-1} count={sup} /> : <Avatar key={member.username} username={member.username} color={member.color} />
         })
+    }
+
+    const handleQuit = () => {
+        props.disconnect();
+        navigate('/dashboard');
+        return;
     }
 
     return <div className={"flex justify-between "}>
@@ -54,7 +62,7 @@ function SheetToulBar(props) {
                                     </span>
                         </div>
                     </a>
-                    <Link to={"/dashboard"} tabIndex="-1" className="dropdown-item text-sm">
+                    <a tabIndex="-1" className="dropdown-item text-sm" onClick={handleQuit}>
                         <div className="flex justify-between align-middle">
                             <span>Quitter</span>
                             <span>
@@ -63,7 +71,7 @@ function SheetToulBar(props) {
                                         <kbd className={"kbd ml-1 text-xs"}>Q</kbd>
                                     </span>
                         </div>
-                    </Link>
+                    </a>
                 </div>
             </div>
 

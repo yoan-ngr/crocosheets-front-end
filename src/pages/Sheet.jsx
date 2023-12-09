@@ -108,6 +108,10 @@ function Sheet() {
 
     }, []);
 
+    function disconnect () {
+        socket.disconnect();
+    }
+
     function updateUserList (users) {
         let tmp = new Map();
         for (let i = 0; i < users.length; i++) {
@@ -296,6 +300,7 @@ function Sheet() {
                 selCellFormula={selectedCellFormula}
                 onEditFormula={handleEditFormula}
                 save={save}
+                disconnect={disconnect}
             />
 
             <div className="bg-red-8 bg-green-8 bg-blue-8 bg-yellow-8 bg-pink-8 bg-purple-8"></div>

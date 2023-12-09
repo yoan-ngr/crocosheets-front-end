@@ -1,6 +1,8 @@
 import Input from "../components/Input.jsx";
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import PromoBanner1 from '../assets/promo_banner_1.png'
+import PromoBanner2 from '../assets/promo_banner_2.png'
 
 function Home () {
 
@@ -18,11 +20,13 @@ function Home () {
                         de gérer aisément toutes vos feuilles de calcul, sans prise de tête !</p>
                 </div>
             </div>
-            <div className="w-7/12 "><img className="h-64 w-full object-none" src="https://storage.googleapis.com/pod_public/1300/167870.jpg" /> </div>
+            <div className="w-7/12 ">
+                <img className="h-72 w-full object-cover" src={PromoBanner1} />
+            </div>
         </div>
         <div className="flex">
             <div className="w-7/12 ">
-                <img className="h-64 w-full object-none" src="https://storage.googleapis.com/pod_public/1300/167870.jpg" />
+                <img className="h-72 w-full object-top object-cover" src={PromoBanner2} />
             </div>
             <div className="w-5/12">
                 <div className="my-16">
