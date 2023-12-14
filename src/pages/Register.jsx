@@ -166,7 +166,7 @@ function Register () {
                 </div>
             </div>
 
-            <div className="form-field">
+            <div className="form-field mb-6">
                 <div className="form-control justify-center">
                     <Link to="/login" className="link link-underline-hover link-primary text-sm">Vous avez déjà un compte? Connectez-vous !</Link>
                 </div>
