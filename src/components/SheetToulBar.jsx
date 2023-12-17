@@ -44,32 +44,14 @@ function SheetToulBar(props) {
             <div className="dropdown dropdown-hover">
                 <label className="btn my-2" tabIndex="0">Fichier</label>
                 <div className="dropdown-menu dropdown-menu-bottom-right">
-                    <a className="dropdown-item text-sm"><div className="flex justify-between align-middle">
-                        <span>Ouvrir</span>
-                        <span>
-                                    <kbd className={"kbd mr-1 text-xs"}>Ctrl</kbd>
-                                    +
-                                    <kbd className={"kbd ml-1 text-xs"}>O</kbd>
-                                </span></div>
-                    </a>
-                    <a tabIndex="-1" className="dropdown-item text-sm" onClick={() => props.save()}>
+                    <a className="dropdown-item text-sm" onClick={() => props.save()}>
                         <div className="flex justify-between align-middle">
                             <span>Sauvegarder</span>
-                            <span>
-                                        <kbd className={"kbd mr-1 text-xs"}>Ctrl</kbd>
-                                        +
-                                        <kbd className={"kbd ml-1 text-xs"}>S</kbd>
-                                    </span>
                         </div>
                     </a>
                     <a tabIndex="-1" className="dropdown-item text-sm" onClick={handleQuit}>
                         <div className="flex justify-between align-middle">
                             <span>Quitter</span>
-                            <span>
-                                        <kbd className={"kbd mr-1 text-xs"}>Ctrl</kbd>
-                                        +
-                                        <kbd className={"kbd ml-1 text-xs"}>Q</kbd>
-                                    </span>
                         </div>
                     </a>
                 </div>
@@ -78,8 +60,8 @@ function SheetToulBar(props) {
             <div className="dropdown dropdown-hover">
                 <label className="btn my-2" tabIndex="0">Editer</label>
                 <div className="dropdown-menu dropdown-menu-bottom-right">
-                    <a className="dropdown-item text-sm">Copier</a>
-                    <a tabIndex="-1" className="dropdown-item text-sm">Coller</a>
+                    <a className="dropdown-item text-sm" onClick={() => props.copy()}>Copier</a>
+                    <a tabIndex="-1" className="dropdown-item text-sm" onClick={() => props.paste()}>Coller</a>
                 </div>
             </div>
 
@@ -91,10 +73,6 @@ function SheetToulBar(props) {
                 onBlur={(e) => props.modify(e.target.value)}
                 onKeyDown={(e) => props.enter(e)}
             />
-        </div>
-
-        <div className={"w-5/12 px-12"}>
-            <input className={"input input-ghost-secondary input-block my-2 font-mono"} value={props.selCellFormula} onChange={props.onEditFormula} placeholder="Entrez une formule..."/>
         </div>
 
         <div className={"w-3/12 flex gap-6 my-2 justify-center"}>

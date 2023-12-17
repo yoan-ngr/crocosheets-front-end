@@ -124,6 +124,20 @@ function Sheet() {
         socket.emit('save', params.id)
     }
 
+    function copy () {
+        navigator.clipboard.writeText(selectedCellFormula);
+    }
+
+    function paste () {
+        let rowIndex = selectedCell.row;
+        let colIndex = selectedCell.col;
+        navigator.clipboard.readText().then((cliptext) => {
+            document.getElementById(`cell-${rowIndex}-${colIndex}`).textContent = cliptext;
+            enregistrer_case(selectedCell.row, selectedCell.col);
+        });
+
+    }
+
     const handleCellClick = (rowIndex, colIndex) => {
         if (selectedCell != null && cell_focus != null) enregistrer_case(selectedCell.row, selectedCell.col);
         changer_de_case(rowIndex, colIndex);
@@ -139,19 +153,10 @@ function Sheet() {
         cell_focus = e.target;
     };
 
-    const handleEditFormula = (e) => {
-        /*setSelectedCellFormula(e.target.value)
-        console.log(e)
-        return;
-        let tmp = [...cellData];
-        tmp[selectedCell.row][selectedCell.col].formula = selectedCellFormula;
-        setCellData(tmp);
-        enregistrer_case(selectedCell.row, selectedCell.col)*/
-    }
-
     function enregistrer_case(rowIndex, colIndex) {
         const updatedCellData = [...cellData];
         const inputValue = document.getElementById(`cell-${rowIndex}-${colIndex}`).textContent.replace(/\n/g, '');
+        console.log("test")
 
         if (inputValue.startsWith('=')) {
             updatedCellData[rowIndex][colIndex] = { formula: inputValue, value: evalFormula(inputValue.substring(1)) };
@@ -297,10 +302,10 @@ function Sheet() {
                 modify={modify_filename}
                 enter={handleNameKeyDown}
                 isOwner={isOwner}
-                selCellFormula={selectedCellFormula}
-                onEditFormula={handleEditFormula}
                 save={save}
                 disconnect={disconnect}
+                copy={copy}
+                paste={paste}
             />
 
             <div className="bg-red-8 bg-green-8 bg-blue-8 bg-yellow-8 bg-pink-8 bg-purple-8"></div>
