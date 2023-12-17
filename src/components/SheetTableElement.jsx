@@ -19,9 +19,11 @@ function SheetTableElement (props) {
             <span className="tooltip tooltip-bottom" data-tooltip="Ouvrir le document">
                 <label className="btn btn-solid-primary" htmlFor="delete-modal" onClick={props.onOpen}><EyeIcon /></label>
             </span>
-            <span className="tooltip tooltip-bottom" data-tooltip="Supprimer le document">
-                <label className="btn btn-solid-error ml-3" htmlFor="delete-modal" onClick={handleDelete}><Trashbin /></label>
-            </span>
+            {
+                props.showDelete && <span className="tooltip tooltip-bottom" data-tooltip="Supprimer le document">
+                    <label className="btn btn-solid-error ml-3" htmlFor="delete-modal" onClick={handleDelete}><Trashbin /></label>
+                </span>
+            }
         </td>
     </tr>
 }

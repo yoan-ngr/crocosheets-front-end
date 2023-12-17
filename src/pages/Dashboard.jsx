@@ -133,6 +133,7 @@ function Dashboard () {
                             modificationDate={document.dateDeModification}
                             setCurrentFileDeleteName={setCurrentFileNameToDelete}
                             setCurrentFileDeleteId={setCurrentFileIdToDelete}
+                            showDelete={document.proprietaire === cookies.user.id}
                             onOpen={() => openSheet(document.idSheet)}
                         />)
                     }
