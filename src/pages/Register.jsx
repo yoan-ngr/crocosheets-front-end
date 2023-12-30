@@ -25,11 +25,9 @@ function Register () {
 
     const handleSignUp = () => {
 
-        // TODO : revérifier les champs avant envoi
-
         bcrypt.hash(password, 10, function (err, result){
             if (!err){
-                axios.post("http://localhost:3000/api/user/", {
+                axios.post("http://82.165.236.248:3000/api/user/", {
                     "email" : email,
                     "password" : password,
                     "last_name" : nom,

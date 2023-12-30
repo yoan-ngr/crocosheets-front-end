@@ -25,10 +25,6 @@ function Profile () {
                         <p className="font-semibold">Email</p>
                         <p className="text-content3">{cookies.user.email}</p>
                     </div>
-                    <div className=" flex justify-between text-left my-5">
-                        <p className="font-semibold">Mot de passe</p>
-                        <Link to={'/'} className="btn btn-outline-success btn-sm">Modifier</Link>
-                    </div>
                 </div>
 
                 <img src={CrocoSurf} className="w-52 mx-auto mt-16" />
